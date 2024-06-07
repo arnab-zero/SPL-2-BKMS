@@ -7,11 +7,12 @@ const Register = () => {
         <div className="hero-content flex-col">
           <div className="text-center lg:text-left mb-16">
             <h1 className="text-5xl font-bold text-center">Register now!</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
-            </p>
+            <div className="flex justify-center">
+              <p className="text-2xl font-semibold w-[55%] text-center py-6">
+                Discover the wonders of Bangla with our Knowledge Graph. Dive
+                into a world of exploration and connection.
+              </p>
+            </div>
           </div>
           <div className="card shrink-0 w-full max-w-xl shadow-2xl">
             <form className="card-body">
@@ -43,13 +44,13 @@ const Register = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary bg-[#4D869C] hover:bg-[#7AB2B2] border-none">
-                  Login
+                <button className="btn btn-primary bg-[#eaba93] hover:bg-[#d8843f] border-none text-white text-base font-semibold">
+                  Register
                 </button>
               </div>
               <div className="text-center mt-5">
                 Already have an accoount?{" "}
-                <span className="underline text-[#7AB2B2] font-bold text-lg">
+                <span className="underline text-[#d8843f] font-bold text-lg">
                   <Link to="/login">Login</Link>
                 </span>
               </div>

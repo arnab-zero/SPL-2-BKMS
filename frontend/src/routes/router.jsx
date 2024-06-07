@@ -3,6 +3,8 @@ import Root from "../layouts/Root/Root";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import SubmitPaper from "../pages/SubmitPaper";
+import Graph from "../pages/Graph";
+import Home from "../pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div>Hello World!</div>,
+        element: <Home/>
       },
       {
         path: "/register",
@@ -23,8 +25,8 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/knowledge-graph",
-        element: <h1>Knowledge Graph</h1>,
+        path: "/graph",
+        element: <Graph />,
       },
       {
         path: "/submit-paper",

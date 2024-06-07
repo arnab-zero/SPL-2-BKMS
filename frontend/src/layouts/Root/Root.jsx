@@ -4,8 +4,8 @@ import Footer from "../../components/Footer";
 
 const Root = () => {
   return (
-    <div>
-      <div className="sticky top-0">
+    <div className="bg-[#faf6f3]">
+      <div className="sticky top-0 z-50">
         <Header />
       </div>
       <Outlet></Outlet>

@@ -5,20 +5,21 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { PiGraphBold } from "react-icons/pi";
 
 const Header = () => {
+  
   const navLinks = (
     <>
-      <li className="tooltip tooltip-bottom text-2xl text-[#4D869C] mx-2" data-tip="Home">
+      <li className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2" data-tip="Home">
         <NavLink to="/">
           <IoHome />
         </NavLink>
       </li>
-      <li className="tooltip tooltip-bottom text-2xl text-[#4D869C] mx-2" data-tip="Submit Paper">
+      <li className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2" data-tip="Submit Paper">
         <NavLink to="/submit-paper">
           <FaRegPaperPlane />
         </NavLink>
       </li>
       <li
-        className="tooltip tooltip-bottom text-2xl text-[#4D869C] mx-2"
+        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
         data-tip="View Knowledge Graph"
       >
         <NavLink to="/graph">
@@ -29,7 +30,7 @@ const Header = () => {
   );
   return (
     <>
-      <div className="navbar bg-[#CDE8E5] px-10">
+      <div className="navbar bg-[#DaB495] px-10">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -55,14 +56,14 @@ const Header = () => {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost text-3xl text-[#4D869C] font-bold">
+          <a className="btn btn-ghost text-3xl text-[#8d572b] font-bold">
             BKMS
           </a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
-        <div className="navbar-end text-lg font-semibold text-[#4D869C]">
+        <div className="navbar-end text-lg font-semibold text-[#c1793f]">
           <NavLink to="/register">Register</NavLink>
         </div>
       </div>
