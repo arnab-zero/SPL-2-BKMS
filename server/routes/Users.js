@@ -83,19 +83,22 @@ router.post('/users', async (req, res) => {
     }
 });
 
-router.put('/users/:id', async (req, res) => {
+router.put('/user/:email', async (req, res) => {
     try {
-        const userId = req.params.id;
-        const { displayName, email, rewardPoints, imageLink, workplace, location, paper } = req.body;
+        const userEmail = req.params.email;
+        const { displayName, rewardPoints, imageLink, workplace, location } = req.body;
 
-        const updatedUser = await User.findByIdAndUpdate(userId, {
-            displayName,
-            email,
-            rewardPoints,
-            imageLink,
-            workplace,
-            location
-        }, { new: true });
+        const updatedUser = await User.findOneAndUpdate(
+            { email: userEmail },
+            {
+                displayName,
+                rewardPoints,
+                imageLink,
+                workplace,
+                location
+            },
+            { new: true }
+        );
 
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });

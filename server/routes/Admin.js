@@ -29,7 +29,6 @@ router.post('/paper/approve', async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Paper approved and reward points added',
             paper,
             user
         });
