@@ -1,6 +1,20 @@
-import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router-dom";
+import { googleSignIn } from "../firebase/GoogleAuth";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const handleGoogleLogIn = () => {
+    googleSignIn()
+      .then((data) => {
+        console.log("Sign in successful.", data);
+        setTimeout(() => {
+          navigate("/user");
+        }, 5000);
+      })
+      .catch((error) => console.log(error.message));
+  };
 
   return (
     <div>
@@ -49,6 +63,18 @@ const Register = () => {
                   Register
                 </button>
               </div>
+              <div className="form-control mt-2">
+                <button
+                  className="btn btn-primary bg-gray-300 hover:bg-[#d8843f] border-none"
+                  onClick={handleGoogleLogIn}
+                >
+                  <FcGoogle className="text-xl" />
+                  <span className="text-black font-bold">
+                    Sign In With Google
+                  </span>
+                </button>
+              </div>
+
               <div className="text-center mt-5">
                 Already have an accoount?{" "}
                 <span className="underline text-[#d8843f] font-bold text-lg">

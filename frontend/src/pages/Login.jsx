@@ -9,10 +9,7 @@ import { AuthContext } from "../contexts/AuthProviderContext";
 //   EmailPasswordSignUp,
 // } from "../firebase/EmailPasswordAuth";
 
-import axios from "axios";
-
 const Login = () => {
-  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // if (user) {
@@ -22,7 +19,10 @@ const Login = () => {
   const handleGoogleLogIn = () => {
     googleSignIn()
       .then((data) => {
-        console.log("Sign in successful.", data);
+        console.log("Login successful: ", data);
+        setTimeout(() => {
+          navigate("/user");
+        }, 5000);
       })
       .catch((error) => console.log(error.message));
   };

@@ -47,6 +47,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e.target)
     onSave(updatedUser);
   };
 
