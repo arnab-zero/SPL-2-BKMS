@@ -1,19 +1,36 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { IoHome } from "react-icons/io5";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { PiGraphBold } from "react-icons/pi";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthProviderContext";
+import { userSignOut } from "../firebase/GoogleAuth";
 
 const Header = () => {
-  
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    userSignOut();
+    console.log("User after logout: ", user);
+    navigate("/login");
+  };
+
   const navLinks = (
     <>
-      <li className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2" data-tip="Home">
+      <li
+        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
+        data-tip="Home"
+      >
         <NavLink to="/">
           <IoHome />
         </NavLink>
       </li>
-      <li className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2" data-tip="Submit Paper">
+      <li
+        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
+        data-tip="Submit Paper"
+      >
         <NavLink to="/submit-paper">
           <FaRegPaperPlane />
         </NavLink>
@@ -63,9 +80,18 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
-        <div className="navbar-end text-lg font-semibold text-[#c1793f]">
-          <NavLink to="/register">Register</NavLink>
-        </div>
+        {user ? (
+          <div
+            className="navbar-end text-lg font-semibold text-[#c1793f]"
+            onClick={handleLogOut}
+          >
+            Log Out
+          </div>
+        ) : (
+          <div className="navbar-end text-lg font-semibold text-[#c1793f]">
+            <NavLink to="/register">Register</NavLink>
+          </div>
+        )}
       </div>
     </>
   );

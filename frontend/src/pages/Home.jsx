@@ -1,4 +1,3 @@
-import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {

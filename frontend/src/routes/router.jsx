@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import SubmitPaper from "../pages/SubmitPaper";
 import Graph from "../pages/Graph";
 import Home from "../pages/Home";
+import PaperDiscussion from "../pages/PaperDiscussion";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home/>
+        element: <Home />,
       },
       {
         path: "/register",
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/submit-paper",
         element: <SubmitPaper></SubmitPaper>,
+      },
+      {
+        path: "/discussion/:paperId",
+        element: <PaperDiscussion />,
       },
     ],
   },

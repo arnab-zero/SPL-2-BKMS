@@ -1,11 +1,38 @@
-import { Link } from "react-router-dom";
-import { googleSignIn, userSignOut } from "../firebase/GoogleAuth";
+import { Link, useNavigate } from "react-router-dom";
+import { googleSignIn } from "../firebase/GoogleAuth";
 
 import { FcGoogle } from "react-icons/fc";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthProviderContext";
+// import {
+//   EmailPasswordSignIn,
+//   EmailPasswordSignUp,
+// } from "../firebase/EmailPasswordAuth";
 
 const Login = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  if (user) {
+    console.log("user: ", user);
+  } else console.log("NONE");
+
   const handleGoogleLogIn = () => {
-    googleSignIn();
+    googleSignIn()
+      .then((data) => {
+        console.log(data);
+        setTimeout(() => {
+          navigate("/graph");
+        }, 5000);
+      })
+      .catch((error) => {
+        console.log("Login failed: ", error.message);
+      });
+  };
+
+  const handleLogIn = (e) => {
+    e.preventDefault();
+    console.log(e.target);
   };
 
   return (
@@ -16,7 +43,7 @@ const Login = () => {
             <div className="text-center lg:text-left mb-16">
               <h1 className="text-5xl font-bold text-center">Login now!</h1>
               <p className="py-6 text-xl font-semibold">
-              Welcome to the Bangla NLP Knowledge Graph, please log in.
+                Welcome to the Bangla NLP Knowledge Graph, please log in.
               </p>
             </div>
             <div className="card shrink-0 w-full max-w-xl shadow-2xl">
@@ -49,7 +76,11 @@ const Login = () => {
                   </label>
                 </div>
                 <div className="form-control mt-6">
-                  <button className="btn btn-primary bg-[#eaba93] hover:bg-[#d8843f] border-none text-white text-base font-semibold">
+                  <button
+                    type="submit"
+                    className="btn btn-primary bg-[#eaba93] hover:bg-[#d8843f] border-none text-white text-base font-semibold"
+                    onClick={handleLogIn}
+                  >
                     Login
                   </button>
                 </div>

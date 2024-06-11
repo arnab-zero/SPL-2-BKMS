@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import GraphVisualization from "./GraphVisualization";
-import DetailDrawer from "./DetailDrawer";
 
 const FilterBox = ({ setNewGraph, nodeDetails }) => {
   const [topicName, setTopicName] = useState("");

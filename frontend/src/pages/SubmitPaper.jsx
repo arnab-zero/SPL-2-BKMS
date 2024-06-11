@@ -1,22 +1,74 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 const SubmitPaper = () => {
+  const [topics, setTopics] = useState([]);
+  const [formData, setFormData] = useState({
+    topic: '',
+    title: '',
+    author: '',
+    link: '',
+    publicationDate: '',
+    abstract: ''
+  });
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/topics');
+        const topicsData = response.data.map(item => item.topic.properties.name);
+        setTopics(topicsData);
+      } catch (error) {
+        console.error('Error fetching topics:', error);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/submitPaper', formData);
+      alert('Paper submitted successfully:', response.data);
+      window.location.reload();
+    } catch (error) {
+      alert("Error submitting paper!");
+      console.error('Error submitting paper:', error);
+    }
+  };
+
   return (
     <div className="grid grid-cols-4 my-10">
       <div className="col-start-2 col-end-4 flex flex-col">
         <h1 className="text-3xl font-bold py-4 text-center">Add Your Paper Into the Graph</h1>
 
-        <form action="" className="">
+        <form onSubmit={handleSubmit} className="">
           <label htmlFor="topic" className="text-lg font-medium leading-10">
             Choose Topic{" "}
           </label>
           <br />
-          <input
-            type="text"
+          <select
             name="topic"
             id="topic"
             className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
-            placeholder="Topic"
+            value={formData.topic}
+            onChange={handleChange}
             required
-          />
+          >
+            <option value="">Select Topic</option>
+            {topics.map((topic, index) => (
+              <option key={index} value={topic}>{topic}</option>
+            ))}
+          </select>
           <br />
           <label htmlFor="title" className="text-lg font-medium leading-10">
             Paper Title{" "}
@@ -28,6 +80,8 @@ const SubmitPaper = () => {
             id="title"
             className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
             placeholder="Paper Title"
+            value={formData.title}
+            onChange={handleChange}
             required
           />
           <br />
@@ -41,6 +95,8 @@ const SubmitPaper = () => {
             id="author-name"
             className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
             placeholder="Author(s) Name"
+            value={formData.author}
+            onChange={handleChange}
             required
           />
           <br />
@@ -54,6 +110,8 @@ const SubmitPaper = () => {
             id="link"
             className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
             placeholder="Paper Link"
+            value={formData.link}
+            onChange={handleChange}
             required
           />
           <br />
@@ -66,10 +124,11 @@ const SubmitPaper = () => {
           <br />
           <input
             type="date"
-            name="publication-date"
+            name="publicationDate"
             id="publication-date"
             className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
-            placeholder="Publication Date"
+            value={formData.publicationDate}
+            onChange={handleChange}
             required
           />
           <br />
@@ -77,17 +136,13 @@ const SubmitPaper = () => {
             Abstract{" "}
           </label>
           <br />
-          {/* <input
-    type="text"
-    name="abstract"
-    id="abstract"
-    className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
-    placeholder="Abstract"
-    required
-  /> */}
           <textarea
+            name="abstract"
             className="resize-y block w-full px-4 py-4 mt-2 text-base text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
             placeholder="Paper abstract"
+            value={formData.abstract}
+            onChange={handleChange}
+            required
           ></textarea>
           <br />
           <div className="flex justify-center">
