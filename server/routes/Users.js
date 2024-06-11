@@ -58,7 +58,7 @@ router.get('/search/:email', async (req, res) => {
 
 router.post('/users', async (req, res) => {
     try {
-        const { displayName, email, rewardPoints, imageLink, workplace, location } = req.body;
+        const { displayName, email, rewardPoints, userImageLink, workplace, location } = req.body;
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -69,7 +69,7 @@ router.post('/users', async (req, res) => {
             displayName,
             email,
             rewardPoints,
-            imageLink,
+            userImageLink,
             workplace,
             location
         });
@@ -86,14 +86,14 @@ router.post('/users', async (req, res) => {
 router.put('/user/:email', async (req, res) => {
     try {
         const userEmail = req.params.email;
-        const { displayName, rewardPoints, imageLink, workplace, location } = req.body;
+        const { displayName, rewardPoints, userImageLink, workplace, location } = req.body;
 
         const updatedUser = await User.findOneAndUpdate(
             { email: userEmail },
             {
                 displayName,
                 rewardPoints,
-                imageLink,
+                userImageLink,
                 workplace,
                 location
             },
