@@ -5,6 +5,7 @@ import FilterBox from "../components/FilterBox";
 import Discussion from "../components/Discussion";
 import PaperDetail from "../components/PaperDetail";
 import { Link } from "react-router-dom";
+import PaginatedPaperList from "../components/PaginatedPaperList";
 
 const Graph = () => {
   const [graphData, setGraphData] = useState([]);
@@ -22,28 +23,37 @@ const Graph = () => {
   }, []);
 
   return (
-    <div className="mx-[10%]">
-      <div className="my-10">
-        <div className="Graph">
-          <h1 className="text-2xl font-bold py-1 text-center">
-            Knowledge Graph
-          </h1>
-          <FilterBox setNewGraph={setNewGraph} nodeDetails={nodeDetails} />
-          {graphData.length > 0 ? (
-            <div className={`relative z-0 ${newGraph ? "hidden" : "visible"}`}>
-              <GraphVisualization
-                data={graphData}
-                setNodeDetails={setNodeDetails}
-              />
-            </div>
-          ) : (
-            <div className="relative left-1/2 top-1/2">
-              <span className="loading loading-bars loading-lg"></span>
-            </div>
-          )}
+    <div>
+      <div className="grid grid-cols-8 mx-[7%]">
+        <div className="my-10 col-span-5">
+          <div className="Graph">
+            <h1 className="text-2xl font-bold py-1 text-center">
+              Knowledge Graph
+            </h1>
+            <FilterBox setNewGraph={setNewGraph} nodeDetails={nodeDetails} />
+            {graphData.length > 0 ? (
+              <div
+                className={` ${newGraph ? "hidden" : "visible"}`}
+              >
+                <GraphVisualization
+                  data={graphData}
+                  setNodeDetails={setNodeDetails}
+                />
+              </div>
+            ) : (
+              <div className="relative left-1/2 top-1/2">
+                <span className="loading loading-bars loading-lg"></span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="col-span-3">
+          <PaginatedPaperList />
         </div>
       </div>
-      <div className="mb-10">{nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}</div>
+      <div className="mb-10">
+        {nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}
+      </div>
     </div>
   );
 };

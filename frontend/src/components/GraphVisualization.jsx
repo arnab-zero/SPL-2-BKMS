@@ -9,7 +9,7 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       return;
     }
 
-    const width = 1500;
+    const width = 1000;
     const height = 800;
 
     // Remove any existing SVG elements before appending
