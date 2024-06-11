@@ -59,7 +59,7 @@ router.post('/submitPaper', async (req, res) => {
 
         const updatedUser = await User.findOneAndUpdate(
             { email: email },
-            { $inc: { submittedPaper: 1 } },
+            { $inc: { paperSubmitted: 1 } },
             { new: true }
         );
 
