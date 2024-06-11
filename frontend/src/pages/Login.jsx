@@ -24,7 +24,10 @@ const Login = () => {
       .then(async (data) => {
         console.log(data);
         try {
-          const response = await axios.post("http://localhost:8000/api/", data);
+          const response = await axios.post(
+            "http://localhost:8000/api/users",
+            data
+          );
           console.log("Data sent successfully: ", response);
         } catch (e) {
           console.error("Error occurred: ", e);
