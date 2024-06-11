@@ -41,13 +41,27 @@ router.get('/users/:id', async (req, res) => {
     }
 });
 
+router.get('/users/search/:email', async (req, res) => {
+    try {
+        const userEmail = req.params.email;
+        const user = await User.find({email: userEmail});
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    
+})
 
 router.post('/users', async (req, res) => {
     try {
-        const { userName, email, rewardPoints, imageLink, workplace, location } = req.body;
+        const { displayName, email, rewardPoints, imageLink, workplace, location } = req.body;
 
         const newUser = new User({
-            userName,
+            displayName,
             email,
             rewardPoints,
             imageLink,
@@ -67,10 +81,10 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const { userName, email, rewardPoints, imageLink, workplace, location } = req.body;
+        const { displayName, email, rewardPoints, imageLink, workplace, location } = req.body;
 
         const updatedUser = await User.findByIdAndUpdate(userId, {
-            userName,
+            displayName,
             email,
             rewardPoints,
             imageLink,
