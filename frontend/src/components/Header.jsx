@@ -4,6 +4,7 @@ import { IoHome } from "react-icons/io5";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { PiGraphBold } from "react-icons/pi";
 import { FaRegUserCircle } from "react-icons/fa";
+import { IoStatsChartOutline } from "react-icons/io5";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 import { userSignOut } from "../firebase/GoogleAuth";
@@ -50,6 +51,14 @@ const Header = () => {
       >
         <NavLink to="/graph">
           <PiGraphBold />
+        </NavLink>
+      </li>
+      <li
+        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
+        data-tip="Statistics"
+      >
+        <NavLink to="/statistics">
+          <IoStatsChartOutline />
         </NavLink>
       </li>
     </>

@@ -7,6 +7,7 @@ import Graph from "../pages/Graph";
 import Home from "../pages/Home";
 import PaperDiscussion from "../pages/PaperDiscussion";
 import UserDashboard from "../pages/UserDashboard";
+import Statistics from "../pages/Statistics";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <UserDashboard />,
+      },
+      {
+        path: "/statistics",
+        element: <Statistics />,
       },
     ],
   },
