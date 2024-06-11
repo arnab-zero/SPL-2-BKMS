@@ -7,6 +7,7 @@ const graphData = require("./routes/Data");
 const filterData = require("./routes/Filter");
 const topics = require("./routes/Topic");
 const submittedPapers = require("./routes/SubmitPaper");
+const userInfo = require("./routes/Users");
 
 
 app = express();
@@ -26,6 +27,7 @@ app.use("/api", graphData);
 app.use("/api", filterData);
 app.use("/api", topics);
 app.use("/api", submittedPapers);
+app.use("/api", userInfo);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
