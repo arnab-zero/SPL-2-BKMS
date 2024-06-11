@@ -12,7 +12,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     setUserInfo(user);
-    console.log("User info from User Dashboard: ", userInfo);
+    // console.log("User info from User Dashboard: ", userInfo);
   }, [user]);
 
   // const { email, displayName, photoURL } = userInfo;

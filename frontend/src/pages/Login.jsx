@@ -15,30 +15,16 @@ const Login = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  if (user) {
-    console.log("user: ", user);
-  } else console.log("NONE");
+  // if (user) {
+  //   console.log("user: ", user);
+  // } else console.log("NONE");
 
   const handleGoogleLogIn = () => {
     googleSignIn()
-      .then(async (data) => {
-        console.log(data);
-        try {
-          const response = await axios.post(
-            "http://localhost:8000/api/users",
-            data
-          );
-          console.log("Data sent successfully: ", response);
-        } catch (e) {
-          console.error("Error occurred: ", e);
-        }
-        setTimeout(() => {
-          navigate("/user");
-        }, 5000);
+      .then((data) => {
+        console.log("Sign in successful.", data);
       })
-      .catch((error) => {
-        console.log("Login failed: ", error.message);
-      });
+      .catch((error) => console.log(error.message));
   };
 
   const handleLogIn = (e) => {
