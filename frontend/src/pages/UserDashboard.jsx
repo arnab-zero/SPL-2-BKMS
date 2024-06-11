@@ -1,9 +1,10 @@
-import UserContributions from "../components/UserContribution";
+import UserContribution from "../components/UserContribution";
 import UserInfo from "../components/UserInfo";
 import UpdateProfileModal from "../components/UpdateProfileModal";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 import ArchivePaper from "../components/ArchivePaper";
+import PaperStats from "../components/PaperStats";
 
 const UserDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -25,11 +26,12 @@ const UserDashboard = () => {
 
   return (
     <div className="grid grid-cols-5 mx-14 gap-3 mb-10">
-      <div className="col-span-3 w-full">
-        <UserInfo user={userInfo} onEditProfile={() => setIsModalOpen(true)} />
+      <div className="col-span-3 w-full mb-5">
+        <UserInfo onEditProfile={() => setIsModalOpen(true)} />
+        <PaperStats />
       </div>
       <aside className="col-span-2 w-full">
-        <ArchivePaper
+        {/* <ArchivePaper
           paperName={"Paper Name 1"}
           paperTopic={"Paper Topic"}
           authors={["Mr. X", "Mr. Y"]}
@@ -49,7 +51,8 @@ const UserDashboard = () => {
           authors={["Mr. X", "Mr. Y"]}
           submissionDate={"Dec 21, 2002"}
           status={"rejected"}
-        />
+        /> */}
+        <UserContribution />
       </aside>
       {isModalOpen && (
         <UpdateProfileModal

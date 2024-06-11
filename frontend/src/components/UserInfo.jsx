@@ -5,7 +5,7 @@ import { AuthContext } from "../contexts/AuthProviderContext";
 const UserInfo = ({ onEditProfile }) => {
   const { user, setUser } = useContext(AuthContext);
   const email = user.email;
-  console.log("From update: ", email);
+  // console.log("From update: ", email);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -14,7 +14,7 @@ const UserInfo = ({ onEditProfile }) => {
           `http://localhost:8080/api/search/${email}`
         );
         setUser(response.data[0]); // Set the user object from the response data
-        console.log("User info: ", response.data[0]);
+        // console.log("User info: ", response.data[0]);
       } catch (error) {
         console.error("Error fetching data: ", error.message);
       }
@@ -31,8 +31,10 @@ const UserInfo = ({ onEditProfile }) => {
   const rewardPoints = user?.rewardPoints || 0;
   const workplace = user?.workplace || "";
   const location = user?.location || "";
+  const paperSubmitted = user?.paperSubmitted || 0;
+  const paperApproved = user?.paperSubmitted - user?.paperRejected || 0;
 
-  console.log("URL: ", photoURL);
+  // console.log("URL: ", photoURL);
 
   return (
     <div className="bg-white mt-5 p-6 py-10 rounded-lg shadow-lg text-center flex flex-col h-full max-h-[500px]">
@@ -52,6 +54,12 @@ const UserInfo = ({ onEditProfile }) => {
         </p>
         <p className="text-gray-600 mb-2">
           From: {location || "Update profile to add location"}
+        </p>
+        <p className="text-gray-600 mb-2">
+          Number of submitted papers: {paperSubmitted}
+        </p>
+        <p className="text-gray-600 mb-2">
+          Number of approved papers: {paperApproved}
         </p>
       </div>
       <div className="flex justify-center">
