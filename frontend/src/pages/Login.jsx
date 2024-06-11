@@ -9,6 +9,8 @@ import { AuthContext } from "../contexts/AuthProviderContext";
 //   EmailPasswordSignUp,
 // } from "../firebase/EmailPasswordAuth";
 
+import axios from "axios";
+
 const Login = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,8 +21,14 @@ const Login = () => {
 
   const handleGoogleLogIn = () => {
     googleSignIn()
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
+        try {
+          const response = await axios.post("http://localhost:8000/api/", data);
+          console.log("Data sent successfully: ", response);
+        } catch (e) {
+          console.error("Error occurred: ", e);
+        }
         setTimeout(() => {
           navigate("/user");
         }, 5000);

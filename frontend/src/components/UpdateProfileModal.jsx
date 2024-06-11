@@ -11,20 +11,22 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get('https://api.first.org/data/v1/countries');
+        const response = await axios.get(
+          "https://api.first.org/data/v1/countries"
+        );
         const data = response.data;
 
-        if (data.status === 'OK') {
+        if (data.status === "OK") {
           const countries = Object.values(data.data).map((country) => ({
             value: country.country,
             label: country.country,
           }));
           setCountryOptions(countries);
         } else {
-          console.error('Failed to fetch countries');
+          console.error("Failed to fetch countries");
         }
       } catch (error) {
-        console.error('Error fetching countries:', error);
+        console.error("Error fetching countries:", error);
       }
     };
 
@@ -34,6 +36,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUser({ ...updatedUser, [name]: value });
+    console.log(e.target);
   };
 
   const handleCountryChange = (selectedOption) => {
@@ -57,7 +60,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
             <input
               type="text"
               name="username"
-              value={updatedUser.username}
+              value={updatedUser?.displayName}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border rounded-lg"
             />
@@ -67,7 +70,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
             <input
               type="text"
               name="workplace"
-              value={updatedUser.workplace}
+              value={updatedUser?.workplace}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border rounded-lg"
             />
@@ -87,7 +90,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
             <input
               type="text"
               name="profilePhoto"
-              value={updatedUser.profilePhoto}
+              value={updatedUser?.photoURL}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border rounded-lg"
             />

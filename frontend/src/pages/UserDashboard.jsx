@@ -1,33 +1,21 @@
 import UserContributions from "../components/UserContribution";
 import UserInfo from "../components/UserInfo";
 import UpdateProfileModal from "../components/UpdateProfileModal";
-import { useState } from "react";
-
-const user = {
-  username: "John Doe",
-  email: "john.doe@example.com",
-  profilePhoto: "https://via.placeholder.com/150",
-  rewardPoints: 1200,
-  contributions: [
-    {
-      id: 1,
-      title: "Research on AI",
-      timestamp: "2023-05-15",
-      status: "Accepted",
-    },
-    {
-      id: 2,
-      title: "Study on Quantum Computing",
-      timestamp: "2023-04-10",
-      status: "Declined",
-    },
-    // Add more contributions as needed
-  ],
-};
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 const UserDashboard = () => {
+  const { user } = useContext(AuthContext);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState(user);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    setUserInfo(user);
+    console.log("User info from User Dashboard: ", userInfo);
+  }, [user]);
+
+  // const { email, displayName, photoURL } = userInfo;
 
   const handleUpdateProfile = (updatedUser) => {
     setUserInfo(updatedUser);
@@ -41,7 +29,7 @@ const UserDashboard = () => {
         <UserInfo user={userInfo} onEditProfile={() => setIsModalOpen(true)} />
       </div>
       <aside className="w-full">
-        <UserContributions contributions={user.contributions} />
+        {/* <UserContributions contributions={user?.contributions} /> */}
       </aside>
       {/* </div> */}
       {isModalOpen && (
