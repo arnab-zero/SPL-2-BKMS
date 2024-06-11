@@ -1,25 +1,35 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 const SubmitPaper = () => {
+  const user = useContext(AuthContext);
+  const userInfo = user.user;
+  const { email } = userInfo;
+
+  console.log(email);
+
   const [topics, setTopics] = useState([]);
   const [formData, setFormData] = useState({
-    topic: '',
-    title: '',
-    author: '',
-    link: '',
-    publicationDate: '',
-    abstract: ''
+    topic: "",
+    title: "",
+    author: "",
+    email: `${email}`,
+    link: "",
+    publicationDate: "",
+    abstract: "",
   });
 
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/topics');
-        const topicsData = response.data.map(item => item.topic.properties.name);
+        const response = await axios.get("http://localhost:8080/api/topics");
+        const topicsData = response.data.map(
+          (item) => item.topic.properties.name
+        );
         setTopics(topicsData);
       } catch (error) {
-        console.error('Error fetching topics:', error);
+        console.error("Error fetching topics:", error);
       }
     };
 
@@ -29,7 +39,7 @@ const SubmitPaper = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -37,19 +47,23 @@ const SubmitPaper = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/api/submitPaper', formData);
-      alert('Paper submitted successfully:', response.data);
-      window.location.reload();
+      const response = await axios.post(
+        "http://localhost:8080/api/submitPaper",
+        formData
+      );
+      alert("Paper submitted successfully:", response.data);
     } catch (error) {
       alert("Error submitting paper!");
-      console.error('Error submitting paper:', error);
+      console.error("Error submitting paper:", error);
     }
   };
 
   return (
     <div className="grid grid-cols-4 my-10">
       <div className="col-start-2 col-end-4 flex flex-col">
-        <h1 className="text-3xl font-bold py-4 text-center">Add Your Paper Into the Graph</h1>
+        <h1 className="text-3xl font-bold py-4 text-center">
+          Add Your Paper Into the Graph
+        </h1>
 
         <form onSubmit={handleSubmit} className="">
           <label htmlFor="topic" className="text-lg font-medium leading-10">
@@ -66,7 +80,9 @@ const SubmitPaper = () => {
           >
             <option value="">Select Topic</option>
             {topics.map((topic, index) => (
-              <option key={index} value={topic}>{topic}</option>
+              <option key={index} value={topic}>
+                {topic}
+              </option>
             ))}
           </select>
           <br />

@@ -1,9 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { googleSignIn } from "../firebase/GoogleAuth";
-
 import { FcGoogle } from "react-icons/fc";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthProviderContext";
+
 // import {
 //   EmailPasswordSignIn,
 //   EmailPasswordSignUp,
