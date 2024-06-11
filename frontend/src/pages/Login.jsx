@@ -22,7 +22,7 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         setTimeout(() => {
-          navigate("/graph");
+          navigate("/user");
         }, 5000);
       })
       .catch((error) => {

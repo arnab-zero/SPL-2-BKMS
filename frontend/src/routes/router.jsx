@@ -6,6 +6,7 @@ import SubmitPaper from "../pages/SubmitPaper";
 import Graph from "../pages/Graph";
 import Home from "../pages/Home";
 import PaperDiscussion from "../pages/PaperDiscussion";
+import UserDashboard from "../pages/UserDashboard";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/discussion/:paperId",
         element: <PaperDiscussion />,
+      },
+      {
+        path: "/user",
+        element: <UserDashboard />,
       },
     ],
   },

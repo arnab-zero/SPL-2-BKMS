@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { PiGraphBold } from "react-icons/pi";
+import { FaRegUserCircle } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 import { userSignOut } from "../firebase/GoogleAuth";
@@ -25,6 +26,14 @@ const Header = () => {
       >
         <NavLink to="/">
           <IoHome />
+        </NavLink>
+      </li>
+      <li
+        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
+        data-tip="My Profile"
+      >
+        <NavLink to="/user">
+          <FaRegUserCircle />
         </NavLink>
       </li>
       <li
