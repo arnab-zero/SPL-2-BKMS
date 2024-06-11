@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Paper = require("../model/submittedPapers");
+const User = require("../model/user")
 
 router.get('/submittedPapers', async (req, res) => {
     try {
@@ -34,7 +35,7 @@ router.post('/submitPaper', async (req, res) => {
     try {
         const { topic, title, author, link, publicationDate, abstract, email } = req.body;
 
-        // Create and save the new paper
+ 
         const newPaper = new Paper({
             topic,
             title,
