@@ -13,6 +13,15 @@ router.get('/submittedPapers', async (req, res) => {
     }
 });
 
+router.get('/pendingPapers', async (req, res) => {
+    try {
+        const papers = await Paper.find({status : 'pending'});
+        res.status(200).json(papers);
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server Error"});
+    }
+})
 router.get('/submittedPapers/:email', async (req, res) => {
     try {
         const userEmail = req.params.email;

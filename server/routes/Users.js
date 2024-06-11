@@ -41,7 +41,7 @@ router.get('/users/:id', async (req, res) => {
     }
 });
 
-router.get('/users/search/:email', async (req, res) => {
+router.get('/search/:email', async (req, res) => {
     try {
         const userEmail = req.params.email;
         const user = await User.find({email: userEmail});
