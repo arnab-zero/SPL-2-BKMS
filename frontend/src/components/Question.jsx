@@ -4,14 +4,22 @@ import { RiQuestionAnswerLine } from "react-icons/ri";
 import { TbMessage2Cancel } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import AnswerInput from "./AnswerInput";
+import Answer from "./Answer";
 
 const Question = () => {
   const [boxVisibility, setBoxVisibility] = useState(false);
   const [replyInputClass, setReplyInputClass] = useState("max-h-0 opacity-0");
+  const [upvote, setUpvote] = useState(0);
+  const [downvote, setDownvote] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const handleAnswerClick = () => {
     setBoxVisibility(!boxVisibility);
     console.log(boxVisibility);
+  };
+
+  const handleViewAnswer = () => {
+    setShowAnswer(!showAnswer);
   };
 
   useEffect(() => {
@@ -24,6 +32,7 @@ const Question = () => {
 
   return (
     <div>
+      <div className="border-t-2 border-[#e6be3c] mb-[2px]"></div>
       <div className="bg-[#f4dec2] w-[70%] px-5 py-3 rounded-2xl mx-5 mb-3">
         <div className="flex items-center justify-between mb-2">
           <div className="flex gap-4 items-center">
@@ -52,9 +61,15 @@ const Question = () => {
         </div>
         <div className="mt-3 flex justify-between items-center">
           <h3 className="text-sm font-light text-gray-600">Timestamp</h3>
-          <div className="flex gap-2 items-center">
-            <BiUpvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
-            <BiDownvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
+          <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-[2px]">
+              <span className="text-lg font-semibold">{upvote}</span>
+              <BiUpvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
+            </div>
+            <div className="flex items-center gap-[2px]">
+              <span className="text-lg font-semibold">{downvote}</span>
+              <BiDownvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
+            </div>
             {boxVisibility ? (
               <TbMessage2Cancel
                 className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300"
@@ -70,6 +85,16 @@ const Question = () => {
         </div>
       </div>
       <div>{boxVisibility ? <AnswerInput /> : ""}</div>
+      <div className="relative left-[2%]">
+        <h3 className="font-semibold cursor-pointer" onClick={handleViewAnswer}>
+          {showAnswer ? "Hide" : "View"} answer(s)
+        </h3>
+        {showAnswer && (
+          <div>
+            <Answer />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

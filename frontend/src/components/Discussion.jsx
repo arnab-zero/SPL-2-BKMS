@@ -12,7 +12,6 @@ const Discussion = () => {
     <div>
       <h1>Discussion</h1>
       <Question />
-      <Answer />
     </div>
   );
 };

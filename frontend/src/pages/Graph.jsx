@@ -43,7 +43,7 @@ const Graph = () => {
           )}
         </div>
       </div>
-      <div>{nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}</div>
+      <div className="mb-10">{nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}</div>
     </div>
   );
 };

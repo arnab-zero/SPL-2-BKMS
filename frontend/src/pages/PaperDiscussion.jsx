@@ -6,8 +6,8 @@ const PaperDiscussion = () => {
   const { paper } = location.state || { name: "arnab" };
   console.log("Paper name: ", paper?.properties);
   return (
-    <div>
-      <div className="mb-10">
+    <div className="mx-[5%]">
+      <div className="mt-4 mb-10">
         <h1 className="text-2xl font-bold">
           Paper:{" "}
           <span className="text-2xl font-bold underline">
