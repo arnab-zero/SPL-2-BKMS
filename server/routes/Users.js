@@ -86,7 +86,7 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const { displayName, email, rewardPoints, imageLink, workplace, location } = req.body;
+        const { displayName, email, rewardPoints, imageLink, workplace, location, paper } = req.body;
 
         const updatedUser = await User.findByIdAndUpdate(userId, {
             displayName,

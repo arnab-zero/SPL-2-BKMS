@@ -32,21 +32,37 @@ router.get('/submittedPapers/:email', async (req, res) => {
 
 router.post('/submitPaper', async (req, res) => {
     try {
-        const { topic, title, author, link, publicationDate, abstract } = req.body;
-  
+        const { topic, title, author, link, publicationDate, abstract, email } = req.body;
+
+        // Create and save the new paper
         const newPaper = new Paper({
             topic,
             title,
             author,
             link,
             publicationDate,
-            abstract
+            abstract,
+            email
         });
 
         const savedPaper = await newPaper.save();
 
-        res.status(201).json(savedPaper);
+        const updatedUser = await User.findOneAndUpdate(
+            { email: email },
+            { $inc: { submittedPaper: 1 } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(201).json({
+            paper: savedPaper,
+            user: updatedUser
+        });
     } catch (error) {
+        console.error(error);
         res.status(400).json({ message: error.message });
     }
 });

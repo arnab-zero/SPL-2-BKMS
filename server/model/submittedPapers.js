@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const paperSchema = new Schema({
-    
     topic: {
         type: String,
         required: true
@@ -26,6 +25,11 @@ const paperSchema = new Schema({
     publicationDate: {
         type: Date,
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['approved', 'rejected', 'pending'],
+        default: 'pending'
     },
     abstract: {
         type: String,

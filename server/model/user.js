@@ -20,6 +20,14 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    paperSubmitted: {
+        type: Number,
+        default: 0
+    },
+    paperRejected: {
+        type: Number,
+        default: 0
+    },
     userImageLink: {
         type: String,
         default: 'xyz'
