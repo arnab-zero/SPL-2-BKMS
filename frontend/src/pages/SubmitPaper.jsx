@@ -8,6 +8,7 @@ const SubmitPaper = () => {
   const { email } = userInfo;
 
   console.log(email);
+  console.log("User from submit paper: ", user);
 
   const [topics, setTopics] = useState([]);
   const [formData, setFormData] = useState({

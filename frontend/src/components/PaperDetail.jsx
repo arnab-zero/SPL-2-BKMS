@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PaperDetail = ({ nodeDetails }) => {
   // console.log("From paper detail: ", nodeDetails?.paper.properties.title);

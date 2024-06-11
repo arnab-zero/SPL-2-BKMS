@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 const UpdateProfileModal = ({ user, onClose, onSave }) => {
   const [updatedUser, setUpdatedUser] = useState(user);
   const [countryOptions, setCountryOptions] = useState([]);
   const [error, setError] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const userInfo = useContext(AuthContext);
+  const email = userInfo.user.email;
+  console.log("From update: ", email);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -45,10 +50,27 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
     setUpdatedUser({ ...updatedUser, location: selectedOption.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target);
-    onSave(updatedUser);
+
+    try {
+      const updatedUserData = {
+        displayName: updatedUser.displayName,
+        workplace: updatedUser.workplace,
+        location: updatedUser.location,
+        userImageLink: updatedUser.photoURL, // Change this line
+      };
+
+      const response = await axios.put(
+        `http://localhost:8080/api/user/${email}`,
+        updatedUserData
+      );
+      console.log("User updated successfully:", response.data);
+      window.location.reload();
+      onSave(updatedUserData); // Call the onSave callback with the updated user data
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
   return (
@@ -60,7 +82,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
             <label className="block text-gray-700">Username</label>
             <input
               type="text"
-              name="username"
+              name="displayName"
               value={updatedUser?.displayName}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border rounded-lg"
@@ -90,7 +112,7 @@ const UpdateProfileModal = ({ user, onClose, onSave }) => {
             <label className="block text-gray-700">Profile Photo URL</label>
             <input
               type="text"
-              name="profilePhoto"
+              name="photoURL"
               value={updatedUser?.photoURL}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border rounded-lg"

@@ -3,6 +3,7 @@ import UserInfo from "../components/UserInfo";
 import UpdateProfileModal from "../components/UpdateProfileModal";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
+import ArchivePaper from "../components/ArchivePaper";
 
 const UserDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -23,15 +24,33 @@ const UserDashboard = () => {
   };
 
   return (
-    <div>
-      {/* <div className="flex p-4 space-x-4"> */}
-      <div className="w-full">
+    <div className="grid grid-cols-5 mx-14 gap-3 mb-10">
+      <div className="col-span-3 w-full">
         <UserInfo user={userInfo} onEditProfile={() => setIsModalOpen(true)} />
       </div>
-      <aside className="w-full">
-        {/* <UserContributions contributions={user?.contributions} /> */}
+      <aside className="col-span-2 w-full">
+        <ArchivePaper
+          paperName={"Paper Name 1"}
+          paperTopic={"Paper Topic"}
+          authors={["Mr. X", "Mr. Y"]}
+          submissionDate={"Dec 21, 2002"}
+          status={"accepted"}
+        />
+        <ArchivePaper
+          paperName={"Paper Name 2"}
+          paperTopic={"Paper Topic"}
+          authors={["Mr. X", "Mr. Y"]}
+          submissionDate={"Dec 21, 2002"}
+          status={"pending"}
+        />
+        <ArchivePaper
+          paperName={"Paper Name 2"}
+          paperTopic={"Paper Topic"}
+          authors={["Mr. X", "Mr. Y"]}
+          submissionDate={"Dec 21, 2002"}
+          status={"rejected"}
+        />
       </aside>
-      {/* </div> */}
       {isModalOpen && (
         <UpdateProfileModal
           user={userInfo}
