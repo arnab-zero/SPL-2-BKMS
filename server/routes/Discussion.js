@@ -61,27 +61,30 @@ router.post('/discussions/answers/:discussionId', async (req, res) => {
 router.post('/discussions/upvote', async (req, res) => {
   try {
     const { discussionId, email } = req.body;
-    const vote = await Vote.findOne({ discussionId });
+    let vote = await Vote.findOne({ discussionId });
+    let isPresentDown = false;
 
-    if (vote && vote.upVoteUsers.includes(email)) {
+    if (!vote) {
+      vote = new Vote({ discussionId, upVoteUsers: [email], downVoteUsers: [] });
+    } else if (vote.upVoteUsers.includes(email)) {
       return res.status(400).json({ error: 'User has already upvoted this discussion' });
+    } else {
+      vote.upVoteUsers.push(email);
+      if(vote.downVoteUsers.includes(email))
+      {
+        isPresentDown = true;
+        vote.downVoteUsers = vote.downVoteUsers.filter(email => email !== email);
+      }
     }
 
-    const updatedVote = await Vote.findOneAndUpdate(
-      { discussionId },
-      {
-        $addToSet: { upVoteUsers: email },
-        $pull: { downVoteUsers: email }
-      },
-      { new: true, upsert: true }
-    );
+    const updatedVote = await vote.save();
 
     const discussion = await Discussion.findByIdAndUpdate(
       discussionId,
       {
         $inc: {
           upvote: 1,
-          downvote: updatedVote && updatedVote.downVoteUsers.includes(email) ? -1 : 0
+          downvote: isPresentDown ? -1 : 0
         }
       },
       { new: true }
@@ -101,27 +104,30 @@ router.post('/discussions/upvote', async (req, res) => {
 router.post('/discussions/downvote', async (req, res) => {
   try {
     const { discussionId, email } = req.body;
-    const vote = await Vote.findOne({ discussionId });
+    let vote = await Vote.findOne({ discussionId });
+    let isPresentUp = false;
 
-    if (vote && vote.downVoteUsers.includes(email)) {
+    if (!vote) {
+      vote = new Vote({ discussionId, downVoteUsers: [email], upVoteUsers: [] });
+    } else if (vote.downVoteUsers.includes(email)) {
       return res.status(400).json({ error: 'User has already downvoted this discussion' });
+    } else {
+      vote.downVoteUsers.push(email);
+      if(vote.upVoteUsers.includes(email))
+        {
+          isPresentUp = true;
+          vote.upVoteUsers = vote.upVoteUsers.filter(email => email !== email);
+        }
     }
 
-    const updatedVote = await Vote.findOneAndUpdate(
-      { discussionId },
-      {
-        $addToSet: { downVoteUsers: email },
-        $pull: { upVoteUsers: email }
-      },
-      { new: true, upsert: true }
-    );
+    const updatedVote = await vote.save();
 
     const discussion = await Discussion.findByIdAndUpdate(
       discussionId,
       {
         $inc: {
           downvote: 1,
-          upvote: updatedVote && updatedVote.upVoteUsers.includes(email) ? -1 : 0
+          upvote: isPresentUp ? -1 : 0
         }
       },
       { new: true }
