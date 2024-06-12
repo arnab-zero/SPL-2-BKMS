@@ -13,7 +13,10 @@ const voteSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  users: [{
+  upVoteUsers: [{
+    type: String,
+  }],
+  downVoteUsers: [{
     type: String,
   }],
 });
