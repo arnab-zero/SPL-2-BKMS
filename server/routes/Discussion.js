@@ -6,12 +6,10 @@ const Vote = require('../model/vote');
 router.get('/discussions/:paperId', async (req, res) => {
   try {
     const paperId = req.params.paperId;
-
     const discussions = await Discussion.find({ paperId })
       .populate('answers.email')
       .sort({ upvote: -1 })
       .exec();
-
     res.json(discussions);
   } catch (err) {
     console.error(err);
@@ -22,7 +20,6 @@ router.get('/discussions/:paperId', async (req, res) => {
 router.post('/discussions', async (req, res) => {
   try {
     const { paperId, email, photoURL, content } = req.body;
-
     const newDiscussion = new Discussion({
       paperId,
       email,
@@ -30,9 +27,7 @@ router.post('/discussions', async (req, res) => {
       content,
       answers: []
     });
-
     const savedDiscussion = await newDiscussion.save();
-
     res.status(201).json(savedDiscussion);
   } catch (err) {
     console.error(err);
@@ -44,7 +39,6 @@ router.post('/discussions/answers/:discussionId', async (req, res) => {
   try {
     const discussionId = req.params.discussionId;
     const { email, photoURL, content } = req.body;
-
     const updatedDiscussion = await Discussion.findByIdAndUpdate(
       discussionId,
       {
@@ -54,11 +48,9 @@ router.post('/discussions/answers/:discussionId', async (req, res) => {
       },
       { new: true }
     );
-
     if (!updatedDiscussion) {
       return res.status(404).json({ error: 'Discussion not found' });
     }
-
     res.json(updatedDiscussion);
   } catch (err) {
     console.error(err);
@@ -69,34 +61,37 @@ router.post('/discussions/answers/:discussionId', async (req, res) => {
 router.post('/discussions/upvote', async (req, res) => {
   try {
     const { discussionId, email } = req.body;
+    const vote = await Vote.findOne({ discussionId });
 
-    let vote = await Vote.findOne({ discussionId });
-
-    if (!vote) {
-      vote = new Vote({ discussionId, upVoteUsers: [], downVoteUsers: [] });
-    }
-    const discussion = await Discussion.findById(discussionId);
-    if(!discussion) {
-      return res.status(500).json({ error: 'Discussion not found' });
+    if (vote && vote.upVoteUsers.includes(email)) {
+      return res.status(400).json({ error: 'User has already upvoted this discussion' });
     }
 
-    if (vote.upVoteUsers.includes(email)) {
-      return res.status(400).json({ error: 'User has already upvoted' });
+    const updatedVote = await Vote.findOneAndUpdate(
+      { discussionId },
+      {
+        $addToSet: { upVoteUsers: email },
+        $pull: { downVoteUsers: email }
+      },
+      { new: true, upsert: true }
+    );
+
+    const discussion = await Discussion.findByIdAndUpdate(
+      discussionId,
+      {
+        $inc: {
+          upvote: 1,
+          downvote: updatedVote && updatedVote.downVoteUsers.includes(email) ? -1 : 0
+        }
+      },
+      { new: true }
+    );
+
+    if (!discussion) {
+      return res.status(404).json({ error: 'Discussion not found' });
     }
 
-    if (vote.downVoteUsers.includes(email)) {
-      vote.downVoteUsers = vote.downVoteUsers.filter(userEmail => userEmail !== email);
-      vote.downvote--;
-      discussion.downvote--;
-    }
-
-    vote.upVoteUsers.push(email);
-    vote.upvote++;
-    discussion.upvote++;
-
-    const updatedVote = await vote.save();
-    const updatedDiscussion = await discussion.save();
-    res.json(updatedVote, updatedDiscussion);
+    res.json({ vote: updatedVote, discussion });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -106,35 +101,37 @@ router.post('/discussions/upvote', async (req, res) => {
 router.post('/discussions/downvote', async (req, res) => {
   try {
     const { discussionId, email } = req.body;
+    const vote = await Vote.findOne({ discussionId });
 
-    let vote = await Vote.findOne({ discussionId });
-
-    if (!vote) {
-      vote = new Vote({ discussionId, upVoteUsers: [], downVoteUsers: [] });
+    if (vote && vote.downVoteUsers.includes(email)) {
+      return res.status(400).json({ error: 'User has already downvoted this discussion' });
     }
 
-    const discussion = await Discussion.findById(discussionId);
-    if(!discussion) {
-      return res.status(500).json({ error: 'Discussion not found' });
+    const updatedVote = await Vote.findOneAndUpdate(
+      { discussionId },
+      {
+        $addToSet: { downVoteUsers: email },
+        $pull: { upVoteUsers: email }
+      },
+      { new: true, upsert: true }
+    );
+
+    const discussion = await Discussion.findByIdAndUpdate(
+      discussionId,
+      {
+        $inc: {
+          downvote: 1,
+          upvote: updatedVote && updatedVote.upVoteUsers.includes(email) ? -1 : 0
+        }
+      },
+      { new: true }
+    );
+
+    if (!discussion) {
+      return res.status(404).json({ error: 'Discussion not found' });
     }
 
-    if (vote.downVoteUsers.includes(email)) {
-      return res.status(400).json({ error: 'User has already downvoted' });
-    }
-
-    if (vote.upVoteUsers.includes(email)) {
-      vote.upVoteUsers = vote.upVoteUsers.filter(userEmail => userEmail !== email);
-      vote.upvote--;
-      discussion.upvote--;
-    }
-
-    vote.downVoteUsers.push(email);
-    vote.downvote++;
-    discussion.downvote++;
-
-    const updatedVote = await vote.save();
-    const updatedDiscussion = await discussion.save();
-    res.json(updatedVote, updatedDiscussion);
+    res.json({ vote: updatedVote, discussion });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

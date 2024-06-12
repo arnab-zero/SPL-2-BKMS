@@ -5,14 +5,6 @@ const voteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  upvote: {
-    type: Number,
-    default: 0,
-  },
-  downvote: {
-    type: Number,
-    default: 0,
-  },
   upVoteUsers: [{
     type: String,
   }],
