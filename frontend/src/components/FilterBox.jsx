@@ -1,9 +1,7 @@
 import { useState } from "react";
-import GraphVisualization from "./GraphVisualization";
 
-const FilterBox = ({ setNewGraph, nodeDetails }) => {
+const FilterBox = ({ setGraphData }) => {
   const [topicName, setTopicName] = useState("");
-  const [graphData, setGraphData] = useState([]);
 
   const handleSearch = async () => {
     try {
@@ -21,7 +19,7 @@ const FilterBox = ({ setNewGraph, nodeDetails }) => {
 
       const data = await response.json();
       setGraphData(data);
-      setNewGraph(true);
+      console.log("Data from filter box: ", data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -35,27 +33,21 @@ const FilterBox = ({ setNewGraph, nodeDetails }) => {
             Search Graph by Topic:{" "}
           </label>
         </div>
-        <div>
+        <div className="items-center">
           <input
             type="text"
             placeholder="Enter topic name"
+            className="border rounded-xl p-2 mr-2"
             value={topicName}
             onChange={(e) => setTopicName(e.target.value)}
           />
           <button
-            className="btn btn-outline font-semibold"
+            className="btn bg-blue-500 text-white font-semibold rounded-2xl px-4 py-2"
             onClick={handleSearch}
           >
             Search
           </button>
         </div>
-      </div>
-      <div id="graph">
-        {graphData.length > 0 ? (
-          <GraphVisualization data={graphData} nodeDetails={nodeDetails} />
-        ) : (
-          <p className="text-xl text-center"></p>
-        )}
       </div>
     </div>
   );

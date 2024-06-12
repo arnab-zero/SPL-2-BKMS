@@ -22,6 +22,9 @@ const Graph = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  console.log("Node details: ", nodeDetails);
+  console.log("Graph data in graph: ", graphData);
+
   return (
     <div>
       <div className="grid grid-cols-8 mx-[7%]">
@@ -30,11 +33,9 @@ const Graph = () => {
             <h1 className="text-2xl font-bold py-1 text-center">
               Knowledge Graph
             </h1>
-            <FilterBox setNewGraph={setNewGraph} nodeDetails={nodeDetails} />
+            <FilterBox setGraphData={setGraphData} />
             {graphData.length > 0 ? (
-              <div
-                className={` ${newGraph ? "hidden" : "visible"}`}
-              >
+              <div className={` ${newGraph ? "hidden" : "visible"}`}>
                 <GraphVisualization
                   data={graphData}
                   setNodeDetails={setNodeDetails}
@@ -48,12 +49,13 @@ const Graph = () => {
           </div>
         </div>
         <div className="col-span-3">
-          <PaginatedPaperList />
+          <PaginatedPaperList graphData={graphData} />
         </div>
       </div>
-      <div className="mb-10">
+      {/* Shows paper detail when a node is clicked in graph  */}
+      {/* <div className="mb-10 mx-[5%]">
         {nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}
-      </div>
+      </div> */}
     </div>
   );
 };
