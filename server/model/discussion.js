@@ -36,6 +36,10 @@ const discussionSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  downvote: {
+    type: Number,
+    default: 0
+  },
   timestamp: {
     type: Date,
     default: Date.now

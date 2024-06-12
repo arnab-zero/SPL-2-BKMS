@@ -104,27 +104,36 @@ router.post('/discussions/upvote', async (req, res) => {
   }
 });
 
-router.post('discussions/downvote', async (req, res) => {
+
+router.post('/discussions/downvote', async (req, res) => {
   try {
     const { discussionId, email } = req.body;
 
     let vote = await Vote.findOne({ discussionId });
 
     if (!vote) {
-      vote = new Vote({ discussionId, users: [] });
+      vote = new Vote({ discussionId, downVoteUsers: [] });
     }
 
     const userIndex = vote.downVoteUsers.indexOf(email);
     if (userIndex === -1) {
       vote.downVoteUsers.push(email);
       vote.downvote++;
+
+      const discussion = await Discussion.findById(discussionId);
+      if (discussion) {
+        discussion.downvote++;
+        await discussion.save();
+      } else {
+        return res.status(404).json({ error: 'Discussion not found' });
+      }
+
+      const updatedVote = await vote.save();
+
+      res.json(updatedVote);
     } else {
       return res.status(400).json({ error: 'User has already voted' });
     }
-
-    const updatedVote = await vote.save();
-
-    res.json(updatedVote);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
