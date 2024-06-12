@@ -28,6 +28,15 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    paperApproved: {
+        type: Number,
+        default: 0
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
     userImageLink: {
         type: String,
         default: 'xyz'
