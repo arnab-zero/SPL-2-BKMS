@@ -6,7 +6,10 @@ router.get('/discussions/:paperId', async (req, res) => {
     try {
       const paperId = req.params.paperId;
   
-      const discussions = await Discussion.find({ paperId });
+      const discussions = await Discussion.find({ paperId })
+        .populate('answers.email')
+        .sort({ upvote: -1 })
+        .exec();
   
       res.json(discussions);
     } catch (err) {
@@ -14,14 +17,16 @@ router.get('/discussions/:paperId', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
   });
+  
 
 router.post('/discussions', async (req, res) => {
   try {
-    const { paperId, email, content } = req.body;
+    const { paperId, email, photoURL, content } = req.body;
 
     const newDiscussion = new Discussion({
       paperId,
       email,
+      photoURL,
       content,
       answers: []
     });
