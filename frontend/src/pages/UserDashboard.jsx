@@ -14,10 +14,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     setUserInfo(user);
-    // console.log("User info from User Dashboard: ", userInfo);
   }, [user]);
-
-  // const { email, displayName, photoURL } = userInfo;
 
   const handleUpdateProfile = (updatedUser) => {
     setUserInfo(updatedUser);
@@ -31,27 +28,6 @@ const UserDashboard = () => {
         <PaperStats />
       </div>
       <aside className="col-span-2 w-full">
-        {/* <ArchivePaper
-          paperName={"Paper Name 1"}
-          paperTopic={"Paper Topic"}
-          authors={["Mr. X", "Mr. Y"]}
-          submissionDate={"Dec 21, 2002"}
-          status={"accepted"}
-        />
-        <ArchivePaper
-          paperName={"Paper Name 2"}
-          paperTopic={"Paper Topic"}
-          authors={["Mr. X", "Mr. Y"]}
-          submissionDate={"Dec 21, 2002"}
-          status={"pending"}
-        />
-        <ArchivePaper
-          paperName={"Paper Name 2"}
-          paperTopic={"Paper Topic"}
-          authors={["Mr. X", "Mr. Y"]}
-          submissionDate={"Dec 21, 2002"}
-          status={"rejected"}
-        /> */}
         <UserContribution />
       </aside>
       {isModalOpen && (

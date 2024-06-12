@@ -23,7 +23,7 @@ const ArchivePaper = ({
   return (
     <div
       className={classNames(
-        "flex flex-col rounded-lg shadow-md overflow-hidden w-full my-5 ml-5",
+        "flex flex-col rounded-lg shadow-md overflow-hidden w-full my-5 ml-5 border-[2px]",
         getBorderColor()
       )}
     >

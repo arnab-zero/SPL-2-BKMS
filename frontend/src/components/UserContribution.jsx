@@ -5,7 +5,6 @@ import axios from "axios";
 
 const UserContribution = () => {
   const [papers, setPapers] = useState([]);
-
   const userInfo = useContext(AuthContext);
   const email = userInfo.user.email;
   console.log("From contribution: ", email);
@@ -23,28 +22,29 @@ const UserContribution = () => {
         console.error("Error fetching papers:", error);
       }
     };
-
     if (email) {
       fetchPapers();
     }
   }, [email]); // Add email to the dependency array
 
   return (
-    <div>
-      {papers.length > 0 ? (
-        papers.map((paper, index) => (
-          <ArchivePaper
-            key={index}
-            paperName={paper.title}
-            paperTopic={paper.topic}
-            authors={paper.author}
-            submissionDate={paper.createdAt}
-            status={paper.status}
-          />
-        ))
-      ) : (
-        <p>No papers found.</p>
-      )}
+    <div className="max-h-[600px] overflow-y-auto overflow-x-hidden px-4 mt-5">
+      <div className="flex flex-col items-center">
+        {papers.length > 0 ? (
+          papers.map((paper, index) => (
+            <ArchivePaper
+              key={index}
+              paperName={paper.title}
+              paperTopic={paper.topic}
+              authors={paper.author}
+              submissionDate={paper.createdAt}
+              status={paper.status}
+            />
+          ))
+        ) : (
+          <p>No papers found.</p>
+        )}
+      </div>
     </div>
   );
 };

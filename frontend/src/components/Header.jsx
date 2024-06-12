@@ -30,7 +30,9 @@ const Header = () => {
         </NavLink>
       </li>
       <li
-        className="tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2"
+        className={`tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2 ${
+          user ? "visible" : "hidden"
+        }`}
         data-tip="My Profile"
       >
         <NavLink to="/user">
@@ -100,7 +102,7 @@ const Header = () => {
         </div>
         {user ? (
           <div
-            className="navbar-end text-lg font-semibold text-[#c1793f]"
+            className="navbar-end text-lg font-semibold text-[#c1793f] cursor-pointer hover:text-[#95663f]"
             onClick={handleLogOut}
           >
             Log Out

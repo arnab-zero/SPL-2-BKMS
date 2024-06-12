@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import TopContributorsList from "../components/TopContributorList";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="grid grid-cols-7 gap-3 mx-5 mb-10">
       <div className="col-span-5">
@@ -12,11 +16,13 @@ const Home = () => {
             </h1>
           </div>
           <div className="flex justify-center">
-            <Link to="/register">
-              <h3 className="btn btn-outline px-10 text-lg bg-[#DaB495] text-white">
-                Get Started
-              </h3>
-            </Link>
+            {!user && (
+              <Link to="/register">
+                <h3 className="btn btn-outline px-10 text-lg bg-[#DaB495] text-white">
+                  Get Started
+                </h3>
+              </Link>
+            )}
           </div>
         </div>
       </div>
