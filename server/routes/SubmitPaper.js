@@ -21,7 +21,8 @@ router.get('/pendingPapers', async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Internal server Error"});
     }
-})
+});
+
 router.get('/submittedPapers/:email', async (req, res) => {
     try {
         const userEmail = req.params.email;

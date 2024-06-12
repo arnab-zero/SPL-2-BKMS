@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Paper = require("../model/submittedPapers");
 const User = require("../model/user")
-
+//const { connectToDatabase } = require('../db.js');
 
 router.post('/paper/approve', async (req, res) => {
     const { paperId } = req.body;
@@ -32,6 +32,27 @@ router.post('/paper/approve', async (req, res) => {
             paper,
             user
         });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
+    }
+});
+
+router.post('/paper/reject', async (req, res) => {
+    const { paperId } = req.body;
+
+    try {
+        const paper = await Paper.findByIdAndUpdate(
+            paperId,
+            { status: 'rejected' },
+            { new: true }
+        );
+
+        if (!paper) {
+            return res.status(404).json({ message: 'Paper not found' });
+        }
+
+        res.status(200).json({ paper });
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: error.message });
