@@ -75,35 +75,28 @@ router.post('/discussions/upvote', async (req, res) => {
     if (!vote) {
       vote = new Vote({ discussionId, upVoteUsers: [], downVoteUsers: [] });
     }
+    const discussion = await Discussion.findById(discussionId);
+    if(!discussion) {
+      return res.status(500).json({ error: 'Discussion not found' });
+    }
 
-    const userIndexInUpVotes = vote.upVoteUsers.indexOf(email);
-    const userIndexInDownVotes = vote.downVoteUsers.indexOf(email);
-
-    if (userIndexInUpVotes !== -1) {
+    if (vote.upVoteUsers.includes(email)) {
       return res.status(400).json({ error: 'User has already upvoted' });
     }
 
-    if (userIndexInDownVotes !== -1) {
-      vote.downVoteUsers.splice(userIndexInDownVotes, 1);
+    if (vote.downVoteUsers.includes(email)) {
+      vote.downVoteUsers = vote.downVoteUsers.filter(userEmail => userEmail !== email);
       vote.downvote--;
+      discussion.downvote--;
     }
 
     vote.upVoteUsers.push(email);
     vote.upvote++;
-
-    const discussion = await Discussion.findById(discussionId);
-    if (discussion) {
-      if (userIndexInDownVotes !== -1) {
-        discussion.downvote--;
-      }
-      discussion.upvote++;
-      await discussion.save();
-    } else {
-      return res.status(404).json({ error: 'Discussion not found' });
-    }
+    discussion.upvote++;
 
     const updatedVote = await vote.save();
-    res.json(updatedVote);
+    const updatedDiscussion = await discussion.save();
+    res.json(updatedVote, updatedDiscussion);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -120,34 +113,28 @@ router.post('/discussions/downvote', async (req, res) => {
       vote = new Vote({ discussionId, upVoteUsers: [], downVoteUsers: [] });
     }
 
-    const userIndexInUpVotes = vote.upVoteUsers.indexOf(email);
-    const userIndexInDownVotes = vote.downVoteUsers.indexOf(email);
+    const discussion = await Discussion.findById(discussionId);
+    if(!discussion) {
+      return res.status(500).json({ error: 'Discussion not found' });
+    }
 
-    if (userIndexInDownVotes !== -1) {
+    if (vote.downVoteUsers.includes(email)) {
       return res.status(400).json({ error: 'User has already downvoted' });
     }
 
-    if (userIndexInUpVotes !== -1) {
-      vote.upVoteUsers.splice(userIndexInUpVotes, 1);
+    if (vote.upVoteUsers.includes(email)) {
+      vote.upVoteUsers = vote.upVoteUsers.filter(userEmail => userEmail !== email);
       vote.upvote--;
+      discussion.upvote--;
     }
 
     vote.downVoteUsers.push(email);
     vote.downvote++;
-
-    const discussion = await Discussion.findById(discussionId);
-    if (discussion) {
-      if (userIndexInUpVotes !== -1) {
-        discussion.upvote--;
-      }
-      discussion.downvote++;
-      await discussion.save();
-    } else {
-      return res.status(404).json({ error: 'Discussion not found' });
-    }
+    discussion.downvote++;
 
     const updatedVote = await vote.save();
-    res.json(updatedVote);
+    const updatedDiscussion = await discussion.save();
+    res.json(updatedVote, updatedDiscussion);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
