@@ -32,14 +32,34 @@ const Admin = () => {
     setSelectedPaper(paper);
   };
 
-  const handleApprove = (paper) => {
-    // Approve paper logic here
-    console.log("Approved paper:", paper._id);
+  const handleApprove = async (paper) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/paper/approve",
+        { paperId: paper._id }
+      );
+      console.log("Approved paper:", paper._id);
+      console.log("Approved paper response: ", response);
+      window.location.reload();
+      // Optionally, update the UI or state after successful approval
+    } catch (error) {
+      console.error("Error approving paper:", error);
+    }
   };
 
-  const handleReject = (paper) => {
-    // Reject paper logic here
-    console.log("Rejected paper:", paper._id);
+  const handleReject = async (paper) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/paper/reject",
+        { paperId: paper._id }
+      );
+      console.log("Rejected paper:", paper._id);
+      console.log("Rejected paper response: ", response);
+      window.location.reload();
+      // Optionally, update the UI or state after successful rejection
+    } catch (error) {
+      console.error("Error rejecting paper:", error);
+    }
   };
 
   return (
