@@ -5,32 +5,31 @@ import axios from "axios";
 const provider = new GoogleAuthProvider();
 
 const googleSignIn = async () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      const { displayName, email, photoURL } = user;
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const { displayName, email, photoURL } = user;
 
-      const newUser = {
-        displayName,
-        email,
-        imageLink: photoURL || "",
-        rewardPoints: 0,
-        workplace: "",
-        location: "",
-      };
+    const newUser = {
+      displayName,
+      email,
+      imageLink: photoURL || "",
+      rewardPoints: 0,
+      workplace: "",
+      location: "",
+    };
 
-      axios
-        .post("http://localhost:8080/api/users", newUser)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error occurred: ", error);
-        });
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+    const response = await axios.post(
+      "http://localhost:8080/api/users",
+      newUser
+    );
+    console.log("User data saved successfully");
+    console.log("New user: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error occurred: ", error.message);
+    return null; // Return null in case of error
+  }
 };
 
 const userSignOut = () => {

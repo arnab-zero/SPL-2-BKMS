@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { googleSignIn } from "../firebase/GoogleAuth";
 import { FcGoogle } from "react-icons/fc";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 // import {
 //   EmailPasswordSignIn,
@@ -9,20 +11,33 @@ import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const navigate = useNavigate();
+  // const navigateUser = () => {
+  //   const { user } = useContext(AuthContext);
+  //   console.log("User logged in: ", user);
+  // };
 
   // if (user) {
   //   console.log("user: ", user);
   // } else console.log("NONE");
 
-  const handleGoogleLogIn = () => {
-    googleSignIn()
-      .then((data) => {
-        console.log("Login successful: ", data);
-        setTimeout(() => {
-          navigate("/user");
-        }, 5000);
-      })
-      .catch((error) => console.log(error.message));
+  const navigateUser = (role) => {
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/user");
+    }
+  };
+
+  const handleGoogleLogIn = async () => {
+    try {
+      const user = await googleSignIn();
+      if (user) {
+        console.log("Login successful: ", user);
+        navigateUser(user.role);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const handleLogIn = (e) => {

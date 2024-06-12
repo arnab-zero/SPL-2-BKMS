@@ -7,7 +7,7 @@ const UserContribution = () => {
   const [papers, setPapers] = useState([]);
   const userInfo = useContext(AuthContext);
   const email = userInfo.user.email;
-  console.log("From contribution: ", email);
+  // console.log("From contribution: ", email);
 
   useEffect(() => {
     const fetchPapers = async () => {

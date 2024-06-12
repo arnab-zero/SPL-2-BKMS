@@ -64,8 +64,8 @@ const Admin = () => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      <aside className="w-full md:w-1/4 bg-gray-800 text-white p-4">
-        <h2 className="text-xl font-bold mb-4">Admin Info</h2>
+      <aside className="w-full md:w-1/4 bg-[#a57d5f] text-white p-4">
+        <h2 className="text-2xl font-bold mb-4">Admin Info</h2>
         <div className="mb-4">
           <img
             src={admin.photoURL}
