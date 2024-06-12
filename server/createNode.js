@@ -31,7 +31,7 @@ async function importData() {
               title: $title,
               authors: $authors,
               abstract: $abstract,
-              publication_date: $publication_date,
+              publicationDate: $publicationDate,
               link: $link,
               arxivId: $arxivId
             })
@@ -42,7 +42,7 @@ async function importData() {
             title: paperData.Title,
             authors: paperData.Authors,
             abstract: paperData.Abstract,
-            publication_date: paperData.publication_date,
+            publicationDate: paperData.publicationDate,
             link: paperData.Link,
             arxivId: paperData.arxiv_id,
             topicName: topic.topic_name
