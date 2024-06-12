@@ -1,17 +1,39 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthProviderContext";
 
 const AnswerInput = ({ discussionId }) => {
   const { user } = useContext(AuthContext);
   const { email } = user;
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/search/${email}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then((data) => {
+        // console.log("Get response: ", data[0].userImageLink);
+        setUserInfo(data[0]);
+      })
+      .catch((error) => {
+        console.log("Error occurred while fetching user: ", error.message);
+      });
+  }, [email]);
+
+  // console.log("after userinfo: ", userInfo?.userImageLink);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const content = e.target.answer.value;
+    const photoURL = userInfo?.userImageLink;
 
     const answerData = {
       email,
+      photoURL,
       content,
     };
 
@@ -20,9 +42,9 @@ const AnswerInput = ({ discussionId }) => {
         `http://localhost:8080/api/discussions/answers/${discussionId}`,
         answerData
       );
-      console.log("Answer posted successfully:", response.data);
+      // console.log("Answer posted successfully:", response.data);
       e.target.reset();
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error posting answer:", error);
     }

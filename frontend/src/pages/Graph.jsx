@@ -53,9 +53,9 @@ const Graph = () => {
         </div>
       </div>
       {/* Shows paper detail when a node is clicked in graph  */}
-      {/* <div className="mb-10 mx-[5%]">
+      <div className="mb-10 mx-[5%]">
         {nodeDetails && <PaperDetail nodeDetails={nodeDetails} />}
-      </div> */}
+      </div>
     </div>
   );
 };

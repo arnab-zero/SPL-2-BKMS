@@ -9,12 +9,13 @@ import PaperDiscussion from "../pages/PaperDiscussion";
 import UserDashboard from "../pages/UserDashboard";
 import Statistics from "../pages/Statistics";
 import Admin from "../pages/Admin";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <p>Page not found</p>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",

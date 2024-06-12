@@ -4,7 +4,7 @@ import Discussion from "../components/Discussion";
 const PaperDiscussion = () => {
   const location = useLocation();
   const { paper } = location.state || { name: "arnab" };
-  console.log("Paper name: ", paper?.properties);
+  // console.log("Paper name: ", paper?.properties);
   return (
     <div className="mx-[5%]">
       <div className="mt-4 mb-10">

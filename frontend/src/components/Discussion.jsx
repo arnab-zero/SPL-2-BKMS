@@ -6,13 +6,10 @@ import { useParams } from "react-router-dom";
 
 const Discussion = () => {
   const { user } = useContext(AuthContext);
-  const { email, photoURL } = user;
+  const { email } = user;
   const [userData, setUserData] = useState(null);
   const [discussions, setDiscussions] = useState([]); // State to hold discussion data
   const { paperId } = useParams();
-
-  console.log("EMaillllllll: ", email);
-  console.log("paper iddddd: ", paperId);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,7 +34,7 @@ const Discussion = () => {
           `http://localhost:8080/api/discussions/${paperId}`
         );
         setDiscussions(response.data); // Save discussion data to state
-        console.log("discussion: ", response.data);
+        // console.log("discussion: ", response.data);
       } catch (error) {
         console.error("Error fetching discussions:", error);
       }
@@ -51,6 +48,7 @@ const Discussion = () => {
     const content = e.target.question.value;
 
     console.log(paperId, email, userData?.userImageLink, content);
+    const photoURL = userData?.userImageLink;
 
     const discussionData = {
       paperId,

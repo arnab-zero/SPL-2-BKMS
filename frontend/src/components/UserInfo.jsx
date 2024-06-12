@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 
 const UserInfo = ({ onEditProfile }) => {

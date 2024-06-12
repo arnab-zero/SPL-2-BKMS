@@ -67,7 +67,15 @@ const SubmitPaper = () => {
     }
   };
 
-  return userInfo ? (
+  if (!user) {
+    return (
+      <div className="my-[200px]">
+        <LoginRegisterMessage />
+      </div>
+    );
+  }
+
+  return (
     <div>
       <div className={`grid grid-cols-4 my-10 ${user ? "visible" : "hidden"}`}>
         <div className="col-start-2 col-end-4 flex flex-col">
@@ -184,14 +192,6 @@ const SubmitPaper = () => {
           </form>
         </div>
       </div>
-      <div className="flex justify-center mt-[40%]">
-        <h1>Login or Register To Submit Your Paper</h1>
-        <Link to="/login">Login</Link>
-      </div>
-    </div>
-  ) : (
-    <div className="my-[200px]"> 
-      <LoginRegisterMessage />
     </div>
   );
 };

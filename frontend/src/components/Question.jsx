@@ -9,15 +9,28 @@ import Answer from "./Answer";
 const Question = ({ discussion }) => {
   const [boxVisibility, setBoxVisibility] = useState(false);
   const [replyInputClass, setReplyInputClass] = useState("max-h-0 opacity-0");
-  const [upvote, setUpvote] = useState(0);
-  const [downvote, setDownvote] = useState(0);
+  const [upCount, setUpCount] = useState(0);
+  const [downCount, setDownCount] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  const { _id, content, timestamp, email, answers, photoURL } = discussion;
+  const {
+    _id,
+    content,
+    timestamp,
+    email,
+    answers,
+    photoURL,
+    upvote,
+    downvote,
+  } = discussion;
+
+  useEffect(() => {
+    setUpCount(upvote);
+    setDownCount(downvote);
+  }, [upvote, downvote]);
 
   const handleAnswerClick = () => {
     setBoxVisibility(!boxVisibility);
-    console.log(boxVisibility);
   };
 
   const handleViewAnswer = () => {
@@ -32,7 +45,61 @@ const Question = ({ discussion }) => {
     }
   }, [boxVisibility]);
 
-  console.log("Discussion final: ", discussion);
+  const handleUpvoteClick = () => {
+    const upvoteData = {
+      discussionId: _id,
+      email: email,
+    };
+
+    fetch("http://localhost:8080/api/discussions/upvote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(upvoteData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Upvote successful:", data);
+        setUpCount((prevCount) => prevCount + 1); // Increase the upvote count
+      })
+      .catch((error) => {
+        console.error("Error occurred while upvoting:", error.message);
+      });
+  };
+
+  const handleDownvoteClick = () => {
+    const downvoteData = {
+      discussionId: _id,
+      email: email,
+    };
+
+    fetch("http://localhost:8080/api/discussions/downvote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(downvoteData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Upvote successful:", data);
+        setDownCount((prevCount) => prevCount + 1); // Increase the upvote count
+      })
+      .catch((error) => {
+        console.error("Error occurred while downvoting:", error.message);
+      });
+  };
 
   return (
     <div>
@@ -59,12 +126,18 @@ const Question = ({ discussion }) => {
           </h3>
           <div className="flex gap-3 items-center">
             <div className="flex items-center gap-[2px]">
-              <span className="text-lg font-semibold">{upvote}</span>
-              <BiUpvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
+              <span className="text-lg font-semibold">{upCount}</span>
+              <BiUpvote
+                className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300"
+                onClick={handleUpvoteClick}
+              />
             </div>
             <div className="flex items-center gap-[2px]">
-              <span className="text-lg font-semibold">{downvote}</span>
-              <BiDownvote className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300" />
+              <span className="text-lg font-semibold">{downCount}</span>
+              <BiDownvote
+                className="text-xl hover:text-white hover:bg-[#f2c35f] hover:rounded-full transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-[#f2c35f] duration-300"
+                onClick={handleDownvoteClick}
+              />
             </div>
             {boxVisibility ? (
               <TbMessage2Cancel
