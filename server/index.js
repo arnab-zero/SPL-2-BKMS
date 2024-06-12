@@ -9,7 +9,7 @@ const topics = require("./routes/Topic");
 const submittedPapers = require("./routes/SubmitPaper");
 const userInfo = require("./routes/Users");
 const admin = require("./routes/Admin");
-
+const discussions = require("./routes/Discussion");
 
 app = express();
 
@@ -30,6 +30,7 @@ app.use("/api", topics);
 app.use("/api", submittedPapers);
 app.use("/api", userInfo);
 app.use("/api", admin);
+app.use("/api/", discussions);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
