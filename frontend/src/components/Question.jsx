@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import AnswerInput from "./AnswerInput";
 import Answer from "./Answer";
 
-const Question = () => {
+const Question = ({ discussion }) => {
   const [boxVisibility, setBoxVisibility] = useState(false);
   const [replyInputClass, setReplyInputClass] = useState("max-h-0 opacity-0");
   const [upvote, setUpvote] = useState(0);
   const [downvote, setDownvote] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+
+  const { _id, content, timestamp, email, answers, photoURL } = discussion;
 
   const handleAnswerClick = () => {
     setBoxVisibility(!boxVisibility);
@@ -30,6 +32,8 @@ const Question = () => {
     }
   }, [boxVisibility]);
 
+  console.log("Discussion final: ", discussion);
+
   return (
     <div>
       <div className="border-t-2 border-[#e6be3c] mb-[2px]"></div>
@@ -37,30 +41,22 @@ const Question = () => {
         <div className="flex items-center justify-between mb-2">
           <div className="flex gap-4 items-center">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBaQWmklNwzgXRyLEDIB9n6lzOEq-fkowNA&s"
+              src={
+                photoURL ||
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBaQWmklNwzgXRyLEDIB9n6lzOEq-fkowNA&s"
+              }
               alt=""
               className="rounded-full w-10 h-10"
             />
-            <h1 className="text-lg font-medium text-[#7b5229c2]">Username</h1>
+            <h1 className="text-lg font-medium text-[#7b5229c2]">{email}</h1>
           </div>
           <PiDotsThreeCircleLight className="text-2xl" />
         </div>
-        <div className="text-justify">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore sit,
-          optio, sed, numquam enim tenetur quod id deserunt consectetur rem ut
-          blanditiis similique accusamus corporis aspernatur. Numquam laudantium
-          atque enim voluptatum, non quidem culpa, assumenda repudiandae
-          incidunt laboriosam dolore perferendis iure accusamus beatae dicta rem
-          excepturi, placeat adipisci autem sunt voluptatem quasi rerum! Nemo ex
-          ipsa veniam deserunt! Quam suscipit culpa omnis hic dolor ad quaerat
-          consequatur repellat quasi aspernatur dignissimos rem tempora
-          deserunt, eligendi rerum inventore pariatur quas, ullam sunt.
-          Inventore veniam eius nemo delectus tempora obcaecati laudantium dolor
-          recusandae dolorum. Consequatur repudiandae doloremque veritatis
-          accusantium voluptatibus, quas non?
-        </div>
+        <div className="text-justify">{content}</div>
         <div className="mt-3 flex justify-between items-center">
-          <h3 className="text-sm font-light text-gray-600">Timestamp</h3>
+          <h3 className="text-sm font-light text-gray-600">
+            {new Date(timestamp).toLocaleString()}
+          </h3>
           <div className="flex gap-3 items-center">
             <div className="flex items-center gap-[2px]">
               <span className="text-lg font-semibold">{upvote}</span>
@@ -84,14 +80,16 @@ const Question = () => {
           </div>
         </div>
       </div>
-      <div>{boxVisibility ? <AnswerInput /> : ""}</div>
+      <div>{boxVisibility ? <AnswerInput discussionId={_id} /> : ""}</div>
       <div className="relative left-[2%]">
         <h3 className="font-semibold cursor-pointer" onClick={handleViewAnswer}>
           {showAnswer ? "Hide" : "View"} answer(s)
         </h3>
         {showAnswer && (
           <div>
-            <Answer />
+            {answers.map((answer) => (
+              <Answer key={answer._id} answer={answer} />
+            ))}
           </div>
         )}
       </div>
