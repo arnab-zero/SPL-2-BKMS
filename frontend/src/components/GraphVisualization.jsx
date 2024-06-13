@@ -12,7 +12,6 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
     const width = 800;
     const height = 800;
 
-    // Remove any existing SVG elements before appending
     d3.select(svgRef.current).selectAll("*").remove();
 
     const svg = d3
@@ -28,7 +27,7 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
     paperNodeColor.opacity = 0.5;
     paperNodeColor = paperNodeColor.formatHex();
     const topicNodeColor = "#c1793f";
-    const nodeHoverColor = "gray"; // Color for node hover effect
+    const nodeHoverColor = "gray";
 
     const nodes = data
       .map(({ topic, paper }) => ({
@@ -49,23 +48,49 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       target: nodes.find((node) => node.id === paper.elementId),
     }));
 
+    const connectedNodes = nodes.filter((node) =>
+      links.some((link) => link.source === node || link.target === node)
+    );
+
+    const filteredLinks = links.filter(
+      (link) =>
+        connectedNodes.includes(link.source) && connectedNodes.includes(link.target)
+    );
+
     const simulation = d3
-      .forceSimulation(nodes)
-      .force("charge", d3.forceManyBody().strength(-200))
+      .forceSimulation(connectedNodes)
+      .force("charge", d3.forceManyBody().strength(-500)) // Increased charge force strength
       .force(
         "link",
         d3
-          .forceLink(links)
+          .forceLink(filteredLinks)
           .id((d) => d.id)
-          .distance(150)
+          .distance(200)
+          .strength(1)
       )
-      .force("center", d3.forceCenter(width / 2, height / 2));
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force(
+        "x",
+        d3
+          .forceX(width / 2)
+          .strength(0.07) // Increased horizontal force strength
+      )
+      .force(
+        "y",
+        d3
+          .forceY(height / 2)
+          .strength(0.07) // Increased vertical force strength
+      )
+      .force(
+        "collide",
+        d3.forceCollide().radius(50).iterations(5) // Added collision force
+      );
 
     const link = svg
       .append("g")
       .attr("class", "links")
       .selectAll(".link")
-      .data(links)
+      .data(filteredLinks)
       .enter()
       .append("line")
       .attr("class", "link")
@@ -75,17 +100,10 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       .append("g")
       .attr("class", "nodes")
       .selectAll(".node")
-      .data(nodes)
+      .data(connectedNodes)
       .enter()
       .append("g")
-      .attr("class", "node")
-      .call(
-        d3
-          .drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+      .attr("class", "node");
 
     node
       .append("circle")
@@ -96,31 +114,22 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       .attr("stroke", "white")
       .attr("stroke-width", 2)
       .on("mouseenter", function (event, d) {
-        // Store the original color in a data attribute
         d3.select(this)
           .attr("data-original-color", d3.select(this).attr("fill"))
-          .attr("fill", nodeHoverColor) // Change node color on hover
-          .style("cursor", "pointer"); // Change cursor to pointer
+          .attr("fill", nodeHoverColor)
+          .style("cursor", "pointer");
       })
       .on("mousemove", function (event, d) {
         d3.select(this)
-          .attr("fill", nodeHoverColor) // Ensure node remains hover color
-          .style("cursor", "pointer"); // Ensure cursor remains pointer
+          .attr("fill", nodeHoverColor)
+          .style("cursor", "pointer");
       })
       .on("mouseleave", function (event, d) {
-        // Restore the original color from the data attribute
         d3.select(this)
           .attr("fill", d3.select(this).attr("data-original-color"))
-          .style("cursor", "default"); // Change cursor back to default
-      })
-      .on("mouseout", function (event, d) {
-        // Ensure original color is reset from the data attribute
-        d3.select(this)
-          .attr("fill", d3.select(this).attr("data-original-color"))
-          .style("cursor", "default"); // Change cursor back to default
+          .style("cursor", "default");
       });
 
-    // Add tooltip for hover
     node
       .append("title")
       .text((d) =>
@@ -158,29 +167,11 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
 
     node.on("click", handleNodeClick);
 
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
-    }
-
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-
     function zoomed({ transform }) {
       svg.selectAll(".nodes").attr("transform", transform);
       svg.selectAll(".links").attr("transform", transform);
     }
 
-    // Function to get short title
     function getShortTitle(title) {
       return title.length > 5 ? title.substring(0, 5) + "..." : title;
     }
