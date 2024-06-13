@@ -15,8 +15,13 @@ const LoginRegisterMessage = () => {
 };
 
 const SubmitPaper = () => {
+  const [userLoggedIn, setUserLoggedIn] = useState(null);
   const user = useContext(AuthContext);
   const userInfo = user?.user;
+
+  useEffect(() => {
+    setUserLoggedIn(user);
+  }, [user]);
 
   const [topics, setTopics] = useState([]);
   const [formData, setFormData] = useState({
