@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const PaperDetail = ({ nodeDetails }) => {
   // console.log("From paper detail: ", nodeDetails?.paper.properties.title);
@@ -13,10 +14,10 @@ const PaperDetail = ({ nodeDetails }) => {
   return (
     <div>
       <div className="mb-10">
-        <h1 className="text-2xl font-bold underline">
+        <h1 className="text-3xl font-bold underline">
           {paper?.properties.title}
         </h1>
-        <h3 className="text-black font-semibold text-base py-2">
+        <h3 className="text-black font-semibold text-xl py-2">
           Author(s):{" "}
           <span className="text-gray-700">{paper?.properties.authors}</span>
         </h3>
@@ -44,6 +45,21 @@ const PaperDetail = ({ nodeDetails }) => {
       </div>
     </div>
   );
+};
+
+PaperDetail.propTypes = {
+  nodeDetails: PropTypes.shape({
+    paper: PropTypes.shape({
+      properties: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        authors: PropTypes.string.isRequired,
+        publicationDate: PropTypes.string.isRequired,
+        link: PropTypes.string.isRequired,
+        abstract: PropTypes.string.isRequired,
+        arxivId: PropTypes.string.isRequired, // Assuming arxivId is required for navigation
+      }).isRequired,
+    }),
+  }),
 };
 
 export default PaperDetail;

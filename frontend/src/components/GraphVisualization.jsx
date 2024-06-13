@@ -95,20 +95,29 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       )
       .attr("stroke", "white")
       .attr("stroke-width", 2)
-      .on("mouseenter", function (d) {
-        d3.select(this).attr("fill", nodeHoverColor); // Change node color on hover
+      .on("mouseenter", function (event, d) {
+        // Store the original color in a data attribute
+        d3.select(this)
+          .attr("data-original-color", d3.select(this).attr("fill"))
+          .attr("fill", nodeHoverColor) // Change node color on hover
+          .style("cursor", "pointer"); // Change cursor to pointer
       })
-      .on("mousemove", function (d) {
-        d3.select(this).attr("fill", nodeHoverColor); // Change node color on hover
+      .on("mousemove", function (event, d) {
+        d3.select(this)
+          .attr("fill", nodeHoverColor) // Ensure node remains hover color
+          .style("cursor", "pointer"); // Ensure cursor remains pointer
       })
-      .on("mouseleave", function (d) {
-        d3.select(this).attr("fill", paperNodeColor); // Change node color on hover
+      .on("mouseleave", function (event, d) {
+        // Restore the original color from the data attribute
+        d3.select(this)
+          .attr("fill", d3.select(this).attr("data-original-color"))
+          .style("cursor", "default"); // Change cursor back to default
       })
-      .on("mouseout", function (d) {
-        d3.select(this).attr(
-          "fill",
-          d.type === "paper" ? paperNodeColor : topicNodeColor
-        ); // Restore original node color
+      .on("mouseout", function (event, d) {
+        // Ensure original color is reset from the data attribute
+        d3.select(this)
+          .attr("fill", d3.select(this).attr("data-original-color"))
+          .style("cursor", "default"); // Change cursor back to default
       });
 
     // Add tooltip for hover

@@ -28,7 +28,7 @@ const UserContribution = () => {
   }, [email]); // Add email to the dependency array
 
   return (
-    <div className="max-h-[600px] overflow-y-auto overflow-x-hidden px-4 mt-5">
+    <div className="max-h-[720px] overflow-y-auto overflow-x-hidden px-4 mt-5">
       <div className="flex flex-col items-center">
         {papers.length > 0 ? (
           papers.map((paper, index) => (

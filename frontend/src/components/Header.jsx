@@ -102,13 +102,13 @@ const Header = () => {
         </div>
         {user ? (
           <div
-            className="navbar-end text-lg font-semibold text-[#c1793f] cursor-pointer hover:text-[#95663f]"
+            className="navbar-end text-xl font-semibold text-[#c1793f] cursor-pointer hover:text-[#95663f]"
             onClick={handleLogOut}
           >
             Log Out
           </div>
         ) : (
-          <div className="navbar-end text-lg font-semibold text-[#c1793f]">
+          <div className="navbar-end text-xl font-semibold text-[#c1793f]">
             <NavLink to="/register">Register</NavLink>
           </div>
         )}

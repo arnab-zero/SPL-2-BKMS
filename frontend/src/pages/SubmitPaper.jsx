@@ -77,21 +77,25 @@ const SubmitPaper = () => {
 
   return (
     <div>
-      <div className={`grid grid-cols-4 my-10 ${user ? "visible" : "hidden"}`}>
+      <div
+        className={`grid grid-cols-4 my-10 mb-20 ${
+          user ? "visible" : "hidden"
+        }`}
+      >
         <div className="col-start-2 col-end-4 flex flex-col">
-          <h1 className="text-3xl font-bold py-4 text-center">
+          <h1 className="text-4xl font-bold py-4 text-center">
             Add Your Paper Into the Graph
           </h1>
 
           <form onSubmit={handleSubmit} className="">
-            <label htmlFor="topic" className="text-lg font-medium leading-10">
+            <label htmlFor="topic" className="text-xl font-medium leading-10">
               Choose Topic{" "}
             </label>
             <br />
             <select
               name="topic"
               id="topic"
-              className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
+              className="text-lg border-2 mb-4 w-full rounded-xl pl-4 py-4"
               value={formData.topic}
               onChange={handleChange}
               required
@@ -104,7 +108,7 @@ const SubmitPaper = () => {
               ))}
             </select>
             <br />
-            <label htmlFor="title" className="text-lg font-medium leading-10">
+            <label htmlFor="title" className="text-xl font-medium leading-10">
               Paper Title{" "}
             </label>
             <br />
@@ -112,14 +116,14 @@ const SubmitPaper = () => {
               type="text"
               name="title"
               id="title"
-              className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
+              className="text-lg border-2 mb-4 w-full rounded-xl pl-4 py-4"
               placeholder="Paper Title"
               value={formData.title}
               onChange={handleChange}
               required
             />
             <br />
-            <label htmlFor="author" className="text-lg font-medium leading-10">
+            <label htmlFor="author" className="text-xl font-medium leading-10">
               Author(s) Name{" "}
             </label>
             <br />
@@ -127,14 +131,14 @@ const SubmitPaper = () => {
               type="text"
               name="author"
               id="author-name"
-              className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
+              className="text-lg border-2 mb-4 w-full rounded-xl pl-4 py-4"
               placeholder="Author(s) Name"
               value={formData.author}
               onChange={handleChange}
               required
             />
             <br />
-            <label htmlFor="link" className="text-lg font-medium leading-10">
+            <label htmlFor="link" className="text-xl font-medium leading-10">
               Paper Link{" "}
             </label>
             <br />
@@ -142,7 +146,7 @@ const SubmitPaper = () => {
               type="text"
               name="link"
               id="link"
-              className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
+              className="border-2 mb-4 w-full text-lg rounded-xl pl-4 py-4"
               placeholder="Paper Link"
               value={formData.link}
               onChange={handleChange}
@@ -151,7 +155,7 @@ const SubmitPaper = () => {
             <br />
             <label
               htmlFor="publication-date"
-              className="text-lg font-medium leading-10"
+              className="text-xl font-medium leading-10"
             >
               Publication Date{" "}
             </label>
@@ -160,7 +164,7 @@ const SubmitPaper = () => {
               type="date"
               name="publicationDate"
               id="publication-date"
-              className="border-2 mb-4 w-full rounded-xl pl-4 py-4"
+              className="border-2 mb-4 w-full rounded-xl pl-4 py-4 text-lg"
               value={formData.publicationDate}
               onChange={handleChange}
               required
@@ -168,25 +172,25 @@ const SubmitPaper = () => {
             <br />
             <label
               htmlFor="abstract"
-              className="text-lg font-medium leading-10"
+              className="text-xl font-medium leading-10"
             >
               Abstract{" "}
             </label>
             <br />
             <textarea
               name="abstract"
-              className="resize-y block w-full px-4 py-4 mt-2 text-base text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+              className="resize-y block w-full px-4 py-4 mt-2 text-lg text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
               placeholder="Paper abstract"
               value={formData.abstract}
               onChange={handleChange}
               required
             ></textarea>
             <br />
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-5">
               <input
                 type="submit"
                 value="Submit Paper"
-                className="border-2 bg-[#ecb78c] px-5 py-2 rounded-xl hover:bg-[#c1793f] hover:border-[#dc833b] text-black font-semibold"
+                className="text-lg font-medium border-2 bg-[#ecb78c] px-5 py-2 rounded-xl hover:bg-[#c1793f] hover:border-[#dc833b] text-white font-semibold"
               />
             </div>
           </form>

@@ -17,13 +17,13 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <div className="hero min-h-screen bg-base-200">
+    <div className="pb-10 flex flex-grow">
+      <div className="hero min-h-screen bg-base-200 shadow-md">
         <div className="hero-content flex-col">
           <div className="text-center lg:text-left mb-16">
             <h1 className="text-5xl font-bold text-center">Register now!</h1>
             <div className="flex justify-center">
-              <p className="text-2xl font-semibold w-[55%] text-center py-6">
+              <p className="text-2xl font-semibold w-[55%] text-center pt-6 pb-3">
                 Discover the wonders of Bangla with our Knowledge Graph. Dive
                 into a world of exploration and connection.
               </p>
@@ -53,7 +53,10 @@ const Register = () => {
                   required
                 />
                 <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
+                  <a
+                    href="#"
+                    className="text-[#d8843f] label-text-alt link link-hover"
+                  >
                     Forgot password?
                   </a>
                 </label>

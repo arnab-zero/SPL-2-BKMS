@@ -2,6 +2,11 @@ import axios from "axios";
 import { useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 
+import { MdEmail } from "react-icons/md";
+import { MdWork } from "react-icons/md";
+import { IoLocationSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+
 const UserInfo = ({ onEditProfile }) => {
   const { user, setUser } = useContext(AuthContext);
   const email = user.email;
@@ -28,11 +33,8 @@ const UserInfo = ({ onEditProfile }) => {
 
   const displayName = user?.displayName || "";
   const photoURL = user?.userImageLink || "";
-  const rewardPoints = user?.rewardPoints || 0;
   const workplace = user?.workplace || "";
   const location = user?.location || "";
-  const paperSubmitted = user?.paperSubmitted || 0;
-  const paperApproved = user?.paperSubmitted - user?.paperRejected || 0;
 
   // console.log("URL: ", photoURL);
 
@@ -42,32 +44,30 @@ const UserInfo = ({ onEditProfile }) => {
         <img
           src={`${photoURL}`}
           alt="Profile"
-          className="w-24 h-24 rounded-full mx-auto mb-4"
+          className="w-24 h-24 rounded-full mx-auto mb-12"
         />
-        <h2 className="text-2xl font-bold mb-2">Username: {displayName}</h2>
-        <p className="text-gray-600 mb-2">User Email: {email}</p>
-        <p className="text-gray-800 font-semibold">
-          Reward Points: {rewardPoints}
+        <h2 className="text-2xl font-bold mb-2">{displayName}</h2>
+        <div className="text-gray-600 mb-2 flex gap-2 items-center justify-center">
+          <MdEmail className="text-black" /> <span>{email}</span>
+        </div>
+        <p className="flex gap-2 items-center justify-center text-gray-600 mb-2">
+          <MdWork className="text-black" />
+          <span>
+            Works at: {workplace || "Update profile to add workplace"}
+          </span>
         </p>
-        <p className="text-gray-600 mb-2">
-          Works at: {workplace || "Update profile to add workplace"}
-        </p>
-        <p className="text-gray-600 mb-2">
-          From: {location || "Update profile to add location"}
-        </p>
-        <p className="text-gray-600 mb-2">
-          Number of submitted papers: {paperSubmitted}
-        </p>
-        <p className="text-gray-600 mb-2">
-          Number of approved papers: {paperApproved}
+        <p className="flex gap-2 items-center justify-center text-gray-600 mb-2">
+          <IoLocationSharp />
+          <span>From: {location || "Update profile to add location"}</span>
         </p>
       </div>
       <div className="flex justify-center">
         <button
           onClick={onEditProfile}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-auto w-[25%]"
+          className="btn btn-outline flex gap-2 items-center justify-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg mt-auto w-[25%]"
         >
-          Update Profile
+          <FaEdit />
+          <span>Update Profile</span>
         </button>
       </div>
     </div>

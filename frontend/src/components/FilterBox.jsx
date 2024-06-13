@@ -29,7 +29,7 @@ const FilterBox = ({ setGraphData }) => {
     <div>
       <div className="SearchGraph flex justify-center py-5 items-center">
         <div>
-          <label className="text-lg font-semibold mr-2">
+          <label className="text-xl font-semibold mr-2">
             Search Graph by Topic:{" "}
           </label>
         </div>
@@ -42,7 +42,7 @@ const FilterBox = ({ setGraphData }) => {
             onChange={(e) => setTopicName(e.target.value)}
           />
           <button
-            className="btn bg-blue-500 text-white font-semibold rounded-2xl px-4 py-2"
+            className="btn bg-[#e69e40] text-white font-semibold rounded-2xl px-4 py-2"
             onClick={handleSearch}
           >
             Search

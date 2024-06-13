@@ -46,7 +46,7 @@ const PaginatedPaperList = ({ graphData }) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Paper List</h1>
+      <h1 className="text-3xl font-bold mb-4 py-5">Paper List</h1>
 
       <ul className="bg-white shadow-md rounded-lg divide-y divide-gray-200">
         {currentItems.map((item) => (
@@ -55,7 +55,7 @@ const PaginatedPaperList = ({ graphData }) => {
             className="p-4 flex justify-between items-center"
           >
             <div>
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold mb-2">
                 {item.paper.properties.title}
               </h2>
               <p className="text-gray-600">
