@@ -59,7 +59,7 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
 
     const simulation = d3
       .forceSimulation(connectedNodes)
-      .force("charge", d3.forceManyBody().strength(-500)) // Increased charge force strength
+      .force("charge", d3.forceManyBody().strength(-500))
       .force(
         "link",
         d3
@@ -73,18 +73,24 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
         "x",
         d3
           .forceX(width / 2)
-          .strength(0.07) // Increased horizontal force strength
+          .strength(0.07)
       )
       .force(
         "y",
         d3
           .forceY(height / 2)
-          .strength(0.07) // Increased vertical force strength
+          .strength(0.07)
       )
       .force(
         "collide",
-        d3.forceCollide().radius(50).iterations(5) // Added collision force
+        d3.forceCollide().radius(50).iterations(5)
       );
+
+    const linkCurveGenerator = d3
+      .linkHorizontal()
+      .x((d) => d.x)
+      .y((d) => d.y)
+      .context(window.null); // Set the context to null to disable bundling
 
     const link = svg
       .append("g")
@@ -92,9 +98,11 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       .selectAll(".link")
       .data(filteredLinks)
       .enter()
-      .append("line")
+      .append("path")
       .attr("class", "link")
-      .attr("stroke", linkColor);
+      .attr("stroke", linkColor)
+      .attr("fill", "none")
+      .attr("d", (d) => linkCurveGenerator(d));
 
     const node = svg
       .append("g")
@@ -148,12 +156,7 @@ const GraphVisualization = ({ data, setNodeDetails }) => {
       );
 
     simulation.on("tick", () => {
-      link
-        .attr("x1", (d) => d.source.x)
-        .attr("y1", (d) => d.source.y)
-        .attr("x2", (d) => d.target.x)
-        .attr("y2", (d) => d.target.y);
-
+      link.attr("d", (d) => linkCurveGenerator(d));
       node.attr("transform", (d) => `translate(${d.x}, ${d.y})`);
     });
 
