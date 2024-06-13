@@ -20,7 +20,7 @@ const TopContributorsList = () => {
   }, []);
 
   return (
-    <div className="bg-white bg-opacity-70 p-6 rounded-lg border-2 border-slate-200 mt-5 w-[80%]">
+    <div className="bg-white bg-opacity-70 p-6 rounded-lg border-2 border-slate-200 mt-5 w-[100%]">
       <h2 className="text-xl font-semibold mb-4 text-gray-700">
         Top Contributors
       </h2>
@@ -43,7 +43,7 @@ const TopContributorsList = () => {
                 <p className="text-sm text-gray-600">{contributor.email}</p>
               </div>
             </div>
-            <p className="text-xl font-semibold  text-[#efaf7a]">
+            <p className="text-lg font-semibold  text-[#efaf7a]">
               {contributor.rewardPoints} pts
             </p>
           </li>

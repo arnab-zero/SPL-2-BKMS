@@ -75,3 +75,4 @@ const UserInfo = ({ onEditProfile }) => {
 };
 
 export default UserInfo;
+

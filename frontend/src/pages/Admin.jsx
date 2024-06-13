@@ -1,16 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../contexts/AuthProviderContext";
 
 const Admin = () => {
-  const [admin, setAdmin] = useState({
-    name: "Admin Name",
-    email: "admin@example.com",
-    workplace: "Admin Workplace",
-    location: "Admin Location",
-    photoURL: "https://via.placeholder.com/150",
-  });
+  const [admin, setAdmin] = useState(null);
   const [papers, setPapers] = useState([]);
   const [selectedPaper, setSelectedPaper] = useState(null);
+
+  const { user, setUser } = useContext(AuthContext);
+  const email = user?.email;
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/search/${email}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then((data) => {
+        // console.log("Get response: ", data[0].userImageLink);
+        setAdmin(data[0]);
+        console.log("from header: ", data[0]);
+      })
+      .catch((error) => {
+        console.log("Error occurred while fetching user: ", error.message);
+      });
+  }, [email]);
 
   useEffect(() => {
     // Fetch pending papers data
@@ -67,16 +83,16 @@ const Admin = () => {
       {/* Admin Info */}
       <aside className="col-span-2 bg-[#a57d5f] text-white p-4">
         <h2 className="text-2xl font-bold mb-4">Admin Info</h2>
-        <div className="mb-4">
+        <div className="mb-4 ml-3">
           <img
-            src={admin.photoURL}
+            src={admin?.userImageLink}
             alt="Admin"
             className="rounded-full w-24 h-24 mb-4"
           />
-          <p className="text-2xl font-semibold">{admin.name}</p>
-          <p>Email: {admin.email}</p>
-          <p>Workplace: {admin.workplace}</p>
-          <p>Location: {admin.location}</p>
+          <p className="text-2xl font-semibold">{admin?.displayName}</p>
+          <p>Email: {admin?.email}</p>
+          <p>Workplace: {admin?.workplace}</p>
+          <p>Location: {admin?.location}</p>
         </div>
         {/* <div>
           <h2 className="text-xl font-bold mb-4">Charts</h2>
