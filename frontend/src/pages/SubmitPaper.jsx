@@ -70,6 +70,8 @@ const SubmitPaper = () => {
       alert("Error submitting paper!");
       console.error("Error submitting paper:", error);
     }
+
+    e.target.reset();
   };
 
   if (!user) {
