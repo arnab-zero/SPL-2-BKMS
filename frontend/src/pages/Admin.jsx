@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthProviderContext";
 
@@ -52,7 +52,7 @@ const Admin = () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/paper/approve",
-        { paperId: paper._id }
+        { paperId: paper._id, topicName: paper.topic }
       );
       console.log("Approved paper:", paper._id);
       console.log("Approved paper response: ", response);
@@ -106,51 +106,57 @@ const Admin = () => {
         <h2 className="text-2xl font-bold mb-4">Pending Papers</h2>
         <div className="overflow-auto max-h-screen">
           <ul className="divide-y divide-gray-200">
-            {papers.map((paper) => (
-              <li
-                key={paper.id}
-                className="flex justify-between items-center p-4 bg-white mb-2 rounded shadow-md pr-3"
-              >
-                <div>
-                  <h3 className="text-2xl font-semibold">{paper.title}</h3>
-                  <p className="text-[#d49e47]">Topic: {paper.topic}</p>
-                  <p>Paper ID: {paper._id}</p>
-                  <p>Author: {paper.author}</p>
-                  <p>
-                    Publication Date:{" "}
-                    {new Date(paper.publicationDate).toLocaleDateString()}
-                  </p>
-                  <a
-                    href={paper.link}
-                    className="text-blue-500"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Paper
-                  </a>
-                </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleReadAbstract(paper)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    Read Abstract
-                  </button>
-                  <button
-                    onClick={() => handleApprove(paper)}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReject(paper)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </li>
-            ))}
+            {papers.length > 0 ? (
+              papers.map((paper) => (
+                <li
+                  key={paper.id}
+                  className="flex justify-between items-center p-4 bg-white mb-2 rounded shadow-md pr-3"
+                >
+                  <div>
+                    <h3 className="text-2xl font-semibold">{paper.title}</h3>
+                    <p className="text-[#d49e47]">Topic: {paper.topic}</p>
+                    <p>Paper ID: {paper._id}</p>
+                    <p>Author: {paper.author}</p>
+                    <p>
+                      Publication Date:{" "}
+                      {new Date(paper.publicationDate).toLocaleDateString()}
+                    </p>
+                    <a
+                      href={paper.link}
+                      className="text-blue-500"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Paper
+                    </a>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleReadAbstract(paper)}
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      Read Abstract
+                    </button>
+                    <button
+                      onClick={() => handleApprove(paper)}
+                      className="bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(paper)}
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <div className="flex justify-center">
+                <h3>No pending papers</h3>
+              </div>
+            )}
           </ul>
         </div>
       </main>
