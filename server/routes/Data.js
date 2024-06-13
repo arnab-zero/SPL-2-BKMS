@@ -13,7 +13,7 @@ router.get('/data', async (req, res) => {
     const result = await session.run(`
       MATCH (t:Topic)-[:CONTAINS]->(p:Paper)
       RETURN t, p
-      LIMIT 50
+      LIMIT 500
     `);
 
     const data = result.records.map(record => ({

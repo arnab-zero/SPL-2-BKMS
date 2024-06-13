@@ -5,19 +5,43 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { PiGraphBold } from "react-icons/pi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoStatsChartOutline } from "react-icons/io5";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProviderContext";
 import { userSignOut } from "../firebase/GoogleAuth";
+import { RiAdminLine } from "react-icons/ri";
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+  const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+
+  const email = user ? user.email : "";
 
   const handleLogOut = () => {
     userSignOut();
     console.log("User after logout: ", user);
+    setUser(null);
+    setUserInfo(null);
     navigate("/login");
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/search/${email}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then((data) => {
+        // console.log("Get response: ", data[0].userImageLink);
+        setUserInfo(data[0]);
+        console.log("from header: ", data[0]);
+      })
+      .catch((error) => {
+        console.log("Error occurred while fetching user: ", error.message);
+      });
+  }, [email]);
 
   const navLinks = (
     <>
@@ -31,12 +55,22 @@ const Header = () => {
       </li>
       <li
         className={`tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2 ${
-          user ? "visible" : "hidden"
+          userInfo?.role === "user" ? "visible" : "hidden"
         }`}
         data-tip="My Profile"
       >
         <NavLink to="/user">
           <FaRegUserCircle />
+        </NavLink>
+      </li>
+      <li
+        className={`tooltip tooltip-bottom text-2xl text-[#c1793f] mx-2 ${
+          userInfo?.role === "admin" ? "visible" : "hidden"
+        }`}
+        data-tip="Admin"
+      >
+        <NavLink to="/admin">
+          <RiAdminLine />
         </NavLink>
       </li>
       <li

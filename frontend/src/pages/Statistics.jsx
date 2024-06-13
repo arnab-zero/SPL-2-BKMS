@@ -100,17 +100,35 @@ const Statistics = () => {
 
   return (
     <div className="container mx-auto p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-12">
+      <h1 className="text-4xl font-bold text-center text-black mt-10 mb-20">
         Research Paper Statistics
       </h1>
 
-      {/* bar chart and pie chart side by side */}
-      <div className="grid grid-cols-2 gap-6">
-        {/* bar chart */}
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-center font-bold text-xl text-gray-700 mb-4">
-            Top 10 Contributed Topics in {selectedYear}
-          </h2>
+      {/* Bar chart and Pie chart side by side */}
+      <div className="grid grid-cols-2 gap-6 mb-10">
+        {/* Bar chart */}
+        <div className="bg-white px-8 py-14 rounded-lg shadow-md">
+          {/* Year selection above the bar chart */}
+          <div className="mb-10 text-center">
+            <label
+              htmlFor="year-select"
+              className="block font-bold text-2xl mb-2 text-gray-700"
+            >
+              Select Year:
+            </label>
+            <select
+              id="year-select"
+              value={selectedYear}
+              onChange={handleYearChange}
+              className="border border-gray-300 rounded-md px-3 py-2 text-lg w-[45%] text-center"
+            >
+              {Array.from({ length: 20 }, (_, i) => 2023 - i).map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
           <Bar
             data={barChartData}
             options={{ animation: { duration: 1000 }, responsive: true }}
@@ -121,7 +139,7 @@ const Statistics = () => {
           </div>
         </div>
 
-        {/* pie chart */}
+        {/* Pie chart */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-center font-bold text-xl text-gray-700 mb-4">
             Number of Papers per Topic
@@ -136,74 +154,77 @@ const Statistics = () => {
         </div>
       </div>
 
-      {/* Line chart */}
-      <div className="mt-10 bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-center font-bold text-xl text-gray-700 mb-4">
-          Publication Trend for Selected Topics
-        </h2>
-        <Line
-          data={{
-            labels: Array.from({ length: 20 }, (_, i) => 2023 - i),
-            datasets: selectedTopics.map((topic) => ({
-              label: topic,
-              data: Array.from({ length: 20 }, (_, i) => {
-                const year = 2023 - i;
-                if (!Array.isArray(data) || data.length === 0) return 0;
-                const count = data.filter(
-                  (item) =>
-                    item.topic.properties.name === topic &&
-                    new Date(
-                      item.paper.properties.publicationDate
-                    ).getFullYear() === year
-                ).length;
-                return count;
-              }),
-              fill: false,
-              borderColor: `rgba(${Math.floor(
-                Math.random() * 256
-              )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
-                Math.random() * 256
-              )}, 1)`,
-              borderWidth: 2,
-            })),
-          }}
-          options={{ animation: { duration: 1000 }, responsive: true }}
-        />
-        <div className="text-center mt-4 text-lg font-medium text-gray-600">
-          Total Papers for Selected Topics:{" "}
-          {selectedTopics.reduce(
-            (sum, topic) =>
-              sum +
-              data.filter((item) => item.topic.properties.name === topic)
-                .length,
-            0
-          )}
+      {/* Line chart and Select Topics */}
+      <div className="bg-white p-8 rounded-lg shadow-md grid grid-cols-2 gap-6">
+        {/* Select Topics */}
+        <div>
+          <label
+            htmlFor="topic-select"
+            className="block font-semibold text-lg mb-2 text-center text-gray-700"
+          >
+            Select Topics:
+          </label>
+          <select
+            id="topic-select"
+            multiple
+            value={selectedTopics}
+            onChange={handleTopicChange}
+            className="block w-full border border-gray-300 rounded-md px-3 py-2 text-lg"
+          >
+            {Array.from(
+              new Set(data.map((item) => item.topic.properties.name))
+            ).map((topic) => (
+              <option key={topic} value={topic}>
+                {topic}
+              </option>
+            ))}
+          </select>
         </div>
-      </div>
 
-      {/* Topic selection */}
-      <div className="mt-10">
-        <label
-          htmlFor="topic-select"
-          className="block font-semibold text-lg mb-2 text-center text-gray-700"
-        >
-          Select Topics:
-        </label>
-        <select
-          id="topic-select"
-          multiple
-          value={selectedTopics}
-          onChange={handleTopicChange}
-          className="block mx-auto w-3/4 border border-gray-300 rounded-md px-3 py-2 text-lg"
-        >
-          {Array.from(
-            new Set(data.map((item) => item.topic.properties.name))
-          ).map((topic) => (
-            <option key={topic} value={topic}>
-              {topic}
-            </option>
-          ))}
-        </select>
+        {/* Line chart */}
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-center font-bold text-xl text-gray-700 mb-4">
+            Publication Trend for Selected Topics
+          </h2>
+          <Line
+            data={{
+              labels: Array.from({ length: 20 }, (_, i) => 2023 - i),
+              datasets: selectedTopics.map((topic) => ({
+                label: topic,
+                data: Array.from({ length: 20 }, (_, i) => {
+                  const year = 2023 - i;
+                  if (!Array.isArray(data) || data.length === 0) return 0;
+                  const count = data.filter(
+                    (item) =>
+                      item.topic.properties.name === topic &&
+                      new Date(
+                        item.paper.properties.publicationDate
+                      ).getFullYear() === year
+                  ).length;
+                  return count;
+                }),
+                fill: false,
+                borderColor: `rgba(${Math.floor(
+                  Math.random() * 256
+                )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+                  Math.random() * 256
+                )}, 1)`,
+                borderWidth: 2,
+              })),
+            }}
+            options={{ animation: { duration: 1000 }, responsive: true }}
+          />
+          <div className="text-center mt-4 text-lg font-medium text-gray-600">
+            Total Papers for Selected Topics:{" "}
+            {selectedTopics.reduce(
+              (sum, topic) =>
+                sum +
+                data.filter((item) => item.topic.properties.name === topic)
+                  .length,
+              0
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

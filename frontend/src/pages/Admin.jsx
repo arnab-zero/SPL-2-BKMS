@@ -63,8 +63,9 @@ const Admin = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      <aside className="w-full md:w-1/4 bg-[#a57d5f] text-white p-4">
+    <div className="grid grid-cols-5 gap-3 min-h-screen">
+      {/* Admin Info */}
+      <aside className="col-span-2 bg-[#a57d5f] text-white p-4">
         <h2 className="text-2xl font-bold mb-4">Admin Info</h2>
         <div className="mb-4">
           <img
@@ -72,29 +73,31 @@ const Admin = () => {
             alt="Admin"
             className="rounded-full w-24 h-24 mb-4"
           />
-          <p>Name: {admin.name}</p>
+          <p className="text-2xl font-semibold">{admin.name}</p>
           <p>Email: {admin.email}</p>
           <p>Workplace: {admin.workplace}</p>
           <p>Location: {admin.location}</p>
         </div>
-        <div>
+        {/* <div>
           <h2 className="text-xl font-bold mb-4">Charts</h2>
           <div className="bg-gray-700 h-64 mb-4"></div>
           <div className="bg-gray-700 h-64 mb-4"></div>
-        </div>
+        </div> */}
       </aside>
-      <main className="flex-1 bg-gray-100 p-4">
+
+      {/* Pending Papers Section */}
+      <main className="col-span-3 bg-gray-100 p-4">
         <h2 className="text-2xl font-bold mb-4">Pending Papers</h2>
         <div className="overflow-auto max-h-screen">
           <ul className="divide-y divide-gray-200">
             {papers.map((paper) => (
               <li
                 key={paper.id}
-                className="flex justify-between items-center p-4 bg-white mb-2 rounded shadow-md"
+                className="flex justify-between items-center p-4 bg-white mb-2 rounded shadow-md pr-3"
               >
                 <div>
-                  <h3 className="text-xl font-semibold">{paper.title}</h3>
-                  <p>Topic: {paper.topic}</p>
+                  <h3 className="text-2xl font-semibold">{paper.title}</h3>
+                  <p className="text-[#d49e47]">Topic: {paper.topic}</p>
                   <p>Paper ID: {paper._id}</p>
                   <p>Author: {paper.author}</p>
                   <p>
@@ -135,6 +138,8 @@ const Admin = () => {
           </ul>
         </div>
       </main>
+
+      {/* Selected Paper Modal */}
       {selectedPaper && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg">

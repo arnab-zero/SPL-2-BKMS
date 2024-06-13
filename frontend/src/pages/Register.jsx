@@ -10,7 +10,11 @@ const Register = () => {
       .then((data) => {
         console.log("Sign in successful.", data);
         setTimeout(() => {
-          navigate("/user");
+          if (data?.role === "admin") {
+            navigate("/admin");
+          } else if (data?.role === "user") {
+            navigate("/user");
+          }
         }, 5000);
       })
       .catch((error) => console.log(error.message));
