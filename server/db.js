@@ -1,7 +1,7 @@
 const neo4j = require("neo4j-driver");
 require("dotenv").config({
   path: "Neo4j-70a45c9e-Created-2024-06-12.txt",
-  debug: true, // to raise file/parsing errors
+  debug: true,
 });
 
 const URI = process.env.NEO4J_URI;
@@ -18,7 +18,7 @@ async function connectToDatabase() {
     return driver;
   } catch (err) {
     console.log(`Connection error\n${err}\nCause: ${err.cause}`);
-    throw err; // Rethrow the error to handle it elsewhere
+    throw err;
   }
 }
 

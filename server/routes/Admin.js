@@ -21,6 +21,7 @@ router.post('/paper/approve', async (req, res) => {
         const user = await User.findOneAndUpdate(
             { email: paper.email },
             { $inc: { rewardPoints: 10 } },
+            { $inc: { paperApproved: 1 } },
             { new: true }
         );
 
@@ -50,6 +51,16 @@ router.post('/paper/reject', async (req, res) => {
 
         if (!paper) {
             return res.status(404).json({ message: 'Paper not found' });
+        }
+
+        const user = await User.findOneAndUpdate(
+            { email: paper.email },
+            { $inc: { paperRejected: 1 } },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
         res.status(200).json({ paper });
